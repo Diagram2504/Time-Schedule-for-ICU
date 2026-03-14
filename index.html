@@ -124,10 +124,411 @@
         const PERIOD_DATA = {"1":["08:45","10:00"],"2":["10:10","11:25"],"3":["11:35","12:50"],"L":["12:50","14:00"],"4":["14:00","15:15"],"5":["15:25","16:40"],"6":["16:50","18:05"],"7":["18:15","19:30"]};
         const SUPER_DATA = {"S4":["13:20","15:15"],"S5":["15:25","17:20"],"S7":["18:15","20:10"]};
         
-        let masterSyllabus = [
-            // 前回までの全データをここに結合
-            { id: 'ANT102', title: '現代人類学の諸問題', instructor: 'KATO, Etsuko', lang: 'J', location: '本館115', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}] }
-        ];
+         let masterSyllabus = [
+  { id: 'ANT102', title: '現代人類学の諸問題', instructor: 'KATO, Etsuko', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}, {day:3, start:'11:35', end:'12:50'}, {day:5, start:'11:35', end:'12:50'}] },
+  { id: 'ANT205', title: '環境と人間生活', instructor: 'SAIT, Callan', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:1, start:'15:25', end:'17:20'}, {day:4, start:'15:25', end:'17:20'}] },
+  { id: 'ANT206', title: '医療人類学', instructor: 'KURATA, Makoto', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'15:25', end:'16:40'}, {day:4, start:'16:50', end:'18:05'}] },
+  { id: 'ANT208', title: '人類学原書講読', instructor: 'TAKASAKI, Megumi', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'15:25', end:'18:05'}] },
+  { id: 'ANT212', title: '人口人類学', instructor: 'MORIKI, Yoshie', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'ANT311', title: '人類学調査実習 I', instructor: 'MORIKI, Yoshie', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'10:10', end:'11:25'}, {day:5, start:'10:10', end:'11:25'}] },
+  { id: 'ARC205', title: '日本考古学', instructor: 'HAYASHI, Toru', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:5, start:'15:25', end:'19:30'}] },
+  { id: 'ARC206', title: '西洋中世美術', instructor: 'ITO, Aki', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}, {day:4, start:'08:45', end:'10:00'}] },
+  { id: 'ARC208', title: '近代美術 II', instructor: 'WAKATSUKA, Wakagi', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'19:30'}] },
+  { id: 'ARC209', title: '博物館概論', instructor: 'TERADA, Ayumi', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'18:05'}] },
+  { id: 'AST102', title: '東アジアの歴史', instructor: 'KIKUCHI, Hideaki', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'BIO102-J', title: '生物学入門(J)', instructor: 'KAMITO, Takehiko', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'11:35', end:'12:50'}] },
+  { id: 'BIO102-E', title: '生物学入門(E)', instructor: 'WANG, Mu-Yun', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'11:35', end:'12:50'}] },
+  { id: 'BIO103', title: '基礎生物学実習', instructor: 'KOSE et al.', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'14:00', end:'19:30'}] },
+  { id: 'BIO212', title: '細胞生物学概論', instructor: 'GOURAUD', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:1, start:'10:10', end:'11:25'}, {day:3, start:'10:10', end:'11:25'}] },
+  { id: 'BIO213', title: '遺伝学概論', instructor: 'HAYAMA, Ryosuke', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:3, start:'14:00', end:'15:15'}, {day:5, start:'14:00', end:'15:15'}] },
+  { id: 'BIO214', title: '生物統計学', instructor: 'AU YEUNG', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:5, start:'15:25', end:'18:05'}] },
+  { id: 'BIO342', title: '植物生理学', instructor: 'MIZOGUCHI, Tsuyoshi', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'08:45', end:'10:00'}, {day:3, start:'08:45', end:'10:00'}] },
+  { id: 'BIO351', title: '動物発生学実習', instructor: 'HIROKI, Masato', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'14:00', end:'19:30'}] },
+  { id: 'BIO381-G', title: '生物学特別演習 I(G)', instructor: 'GOURAUD', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'18:05'}] },
+  { id: 'BIO381-A', title: '生物学特別演習 I(A)', instructor: 'AU YEUNG', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'18:05'}] },
+  { id: 'BIO384', title: '生命科学特論 I', instructor: 'WANG et al.', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:6, start:'16:50', end:'19:30'}] },
+  { id: 'BUS101', title: '会計学', instructor: 'YAMANE, Satoka', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}, {day:3, start:'11:35', end:'12:50'}, {day:5, start:'11:35', end:'12:50'}] },
+  { id: 'BUS102', title: '経営学序説', instructor: 'KODAMA, Koichiro', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'19:30'}] },
+  { id: 'BUS201', title: '経営学', instructor: 'INABA, Yushi', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}, {day:4, start:'08:45', end:'10:00'}] },
+  { id: 'BUS205', title: '国際マーケティング論', instructor: 'KOO, Ja Seung', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'19:30'}] },
+  { id: 'BUS212', title: '管理会計論', instructor: 'YAMANE, Satoka', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:3, start:'15:25', end:'17:20'}, {day:5, start:'15:25', end:'17:20'}] },
+  { id: 'BUS309', title: '経済・経営文献講読', instructor: 'ZHU, Xiji', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'18:05'}] },
+  { id: 'CHM102', title: '基礎化学実験', instructor: 'TSUNODA et al.', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:5, start:'14:00', end:'19:30'}] },
+  { id: 'CHM103', title: '基礎化学', instructor: 'CHUN, Wang Jae', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}, {day:3, start:'11:35', end:'12:50'}] },
+  { id: 'CHM232', title: '有機化学実験', instructor: 'KOBAYASHI, Junji', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'14:00', end:'19:30'}] },
+  { id: 'CHM241', title: '物理化学 I', instructor: 'CHUN, Wang Jae', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'10:10', end:'11:25'}, {day:3, start:'10:10', end:'11:25'}] },
+  { id: 'CHM322', title: '無機化学 III', instructor: 'KAWANO, Yasuro', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'18:05'}] },
+  { id: 'CHM331', title: '有機化学 II', instructor: 'KOBAYASHI, Junji', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'10:10', end:'12:50'}] },
+  { id: 'CHM381', title: '化学特別研究 I', instructor: 'CHUN / TSUNODA', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:6, start:'16:50', end:'19:30'}] },
+  { id: 'CTP201', title: '生涯学習概論', instructor: 'WATANABE, Yuko', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:6, start:'10:10', end:'12:50'}] },
+  { id: 'CTP202', title: '博物館教育論', instructor: 'WATANABE, Yuko', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'15:25', end:'18:05'}] },
+  { id: 'DPS103', title: 'ジェンダーと開発', instructor: 'TAKAMATSU, Kana', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}, {day:3, start:'11:35', end:'12:50'}, {day:5, start:'11:35', end:'12:50'}] },
+  { id: 'DPS202', title: '国際開発協力論', instructor: 'KOBAYASHI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:6, start:'08:45', end:'12:50'}] },
+  { id: 'DPS204', title: '開発のミクロ経済学', instructor: 'KONDO, Masanori', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'14:00', end:'15:15'}, {day:4, start:'14:00', end:'15:15'}] },
+  { id: 'ECO101', title: 'マクロ経済学原論', instructor: 'MONTGOMERY', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'ECO102', title: 'ミクロ経済学原論', instructor: 'MARSZALEC', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:3, start:'13:20', end:'15:15'}, {day:5, start:'13:20', end:'15:15'}] },
+  { id: 'ECO103', title: '経済・経営の統計学', instructor: 'KANAZAWA, Yuichiro', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'19:30'}] }
+  ,{ id: 'ECO211', title: '計量経済学', instructor: 'INOUE, Tomoo', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'19:30'}] },
+  { id: 'ECO214', title: '数理プログラミング入門', instructor: 'SHENG, Dachen', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:5, start:'15:25', end:'19:30'}] },
+  { id: 'ECO231', title: 'ゲーム理論', instructor: 'OGAWA, Akira', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'ECO234', title: '金融の理論と政策', instructor: 'MONTGOMERY', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'ECO257', title: '労働経済学', instructor: 'NAITO, Tomoe', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'19:30'}] },
+  { id: 'ECO333', title: '中級ミクロ経済学 II', instructor: 'OGAWA, Akira', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:1, start:'15:25', end:'17:20'}, {day:4, start:'15:25', end:'17:20'}] },
+  { id: 'ECO334', title: 'マクロ経済理論', instructor: 'KAIZOJI, Taisei', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'ECO354', title: '環境経済学', instructor: 'MARSZALEC', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:3, start:'15:25', end:'17:20'}, {day:5, start:'15:25', end:'17:20'}] },
+  { id: 'EDU101', title: '教育におけるICT活用', instructor: 'AOKI / NAKAYA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'15:25', end:'18:05'}] },
+  { id: 'EDU115', title: '教育原理', instructor: 'OKAWA, Hiroshi', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}, {day:3, start:'11:35', end:'12:50'}] },
+  { id: 'EDU118', title: '効果的教育への心理学的アプローチ', instructor: 'SHIMIZU, Yasuo', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:3, start:'13:20', end:'15:15'}, {day:5, start:'13:20', end:'15:15'}] },
+  { id: 'EDU209', title: '平和を育む教育コミュニケーション', instructor: 'AOKI, Hiroyuki', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'10:10', end:'11:25'}, {day:4, start:'08:45', end:'10:00'}] },
+  { id: 'EDU212', title: 'カリキュラム論', instructor: 'SATO, Chizu', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'18:05'}] },
+  { id: 'EDU221', title: '発展途上国における教育', instructor: 'DAWSON', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'16:40'}, {day:4, start:'15:25', end:'16:40'}] },
+  { id: 'EDU222', title: '教育社会学', instructor: 'NISHIMURA, Mikiko', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'EDU223', title: 'ラーニング・アナリティクス I', instructor: 'HOWARD', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:3, start:'10:10', end:'11:25'}, {day:5, start:'10:10', end:'11:25'}] },
+  { id: 'EDU225', title: 'コンピュテーション思考の教育', instructor: 'AOKI, Hiroyuki', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:1, start:'15:25', end:'17:20'}, {day:4, start:'15:25', end:'17:20'}] },
+  { id: 'EDU228', title: '特別活動・総合的な学習の時間の指導法', instructor: 'TAKAHASHI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}] },
+  { id: 'EDU315', title: '比較の視点からみた日本の教育', instructor: 'TARUMI, Yuko', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'19:30'}] },
+  { id: 'ELA060', title: 'ELA：論文作成', instructor: 'STAFF', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}, {day:2, start:'15:25', end:'16:40'}, {day:3, start:'11:35', end:'12:50'}, {day:5, start:'11:35', end:'12:50'}] },
+  { id: 'ELG201', title: '上級総合英語：TOEFL', instructor: 'MOROOKA, Mari', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:1, start:'08:45', end:'10:00'}, {day:3, start:'08:45', end:'10:00'}] },
+  { id: 'ELG202-I', title: '上級総合英語：IELTS(E)', instructor: 'ECKHAUS', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:3, start:'08:45', end:'10:00'}, {day:5, start:'08:45', end:'10:00'}] },
+  { id: 'ELG202-M', title: '上級総合英語：IELTS(M)', instructor: 'MACKENZIE', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}, {day:3, start:'11:35', end:'12:50'}] },
+  { id: 'ELG301', title: 'アカデミック・ライティング・チュータリング', instructor: 'GARNER', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:1, start:'08:45', end:'10:00'}, {day:3, start:'08:45', end:'10:00'}] },
+  { id: 'ENV103', title: '環境経営入門', instructor: 'MORI, Tetsuro', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'10:10', end:'12:50'}] },
+  { id: 'GEH002', title: 'Ｈ１：美術の世界', instructor: 'ITO, Aki', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'GEH025', title: 'Ｈ１：文学の世界（日本文学）', instructor: 'SONOYAMA, Senri', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'GEH026', title: 'Ｈ１：日本伝統芸能の世界', instructor: 'YASUHARA, Makoto', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}, {day:3, start:'11:35', end:'12:50'}, {day:5, start:'11:35', end:'12:50'}] },
+  { id: 'GEH031', title: 'Ｈ１：哲学の世界', instructor: 'SUGAYA, Motoi', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'19:30'}] },
+  { id: 'GEH041', title: 'Ｈ２：言語教育', instructor: 'FUJII / CHUN', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}, {day:3, start:'11:35', end:'12:50'}, {day:5, start:'11:35', end:'12:50'}] },
+  { id: 'GEH044', title: 'Ｈ２：手話の世界', instructor: 'QUAY, Suzanne', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'GEH064', title: 'Ｈ１: 気候正義', instructor: 'RAVENSCROFT', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'GEL002', title: 'リベラルアーツ特別講義 （Ａ）', instructor: 'IKOMA et al.', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'GEN001', title: 'Ｎ１：生命科学（Ａ）', instructor: 'HAYAMA et al.', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'10:10', end:'11:25'}, {day:3, start:'10:10', end:'11:25'}, {day:5, start:'10:10', end:'11:25'}] },
+  { id: 'GEN013', title: 'Ｎ１：自然の化学的基礎', instructor: 'KUBO et al.', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}, {day:3, start:'11:35', end:'12:50'}, {day:5, start:'11:35', end:'12:50'}] },
+  { id: 'GEN023', title: 'Ｎ１：情報科学概論', instructor: 'OHTA / TANAKA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'GEN024', title: 'Ｎ１：数学の方法', instructor: 'YAMAZAKI, Mitsuru', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}, {day:4, start:'08:45', end:'10:00'}] },
+  { id: 'GEN026', title: 'Ｎ２：データサイエンスの考え方', instructor: 'DOU / KANAZAWA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] }
+  ,{ id: 'GEN053', title: 'Ｎ２：科学哲学', instructor: 'HIRAI, Masahito', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'19:30'}] },
+  { id: 'GEN054', title: 'Ｎ２：環境研究', instructor: 'NUNOSHIBA, Tatsuo', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}, {day:3, start:'11:35', end:'12:50'}, {day:5, start:'11:35', end:'12:50'}] },
+  { id: 'GEN055', title: 'Ｎ２：グローバル・エコシステム', instructor: 'SASAKI, Takahiro', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'19:30'}] },
+  { id: 'GES001', title: 'Ｓ１：経済と経済学', instructor: 'KAIZOJI / INABA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'GES026', title: 'Ｓ１：社会と文化', instructor: 'BROWN', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'GES035', title: 'Ｓ１：東アジア史への招き', instructor: 'KIKUCHI, Hideaki', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}, {day:4, start:'08:45', end:'10:00'}] },
+  { id: 'GES039', title: 'Ｓ２：統計情報リテラシー', instructor: 'KANEKO, Takuya', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}, {day:3, start:'11:35', end:'12:50'}, {day:5, start:'11:35', end:'12:50'}] },
+  { id: 'GES051', title: 'Ｓ２：メディアと記号', instructor: 'HONG, Seung Min', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:3, start:'13:20', end:'15:15'}, {day:5, start:'13:20', end:'15:15'}] },
+  { id: 'GES057', title: 'Ｓ２：教育プロジェクト', instructor: 'DAWSON', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'GES062', title: 'Ｓ２：人間と平和', instructor: 'ARAKAKI, Osamu', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}, {day:3, start:'11:35', end:'12:50'}, {day:5, start:'11:35', end:'12:50'}] },
+  { id: 'GES095', title: 'Ｓ２：「３０のモノ」', instructor: 'SALTON', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'GES096', title: 'Ｓ２：こころとからだの健康', instructor: 'SHIMIZU, Yasuo', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}, {day:3, start:'11:35', end:'12:50'}, {day:5, start:'11:35', end:'12:50'}] },
+  { id: 'GEX001', title: 'Ｘ：キリスト教概論', instructor: 'RO, Johannes Unsok', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}, {day:3, start:'11:35', end:'12:50'}, {day:5, start:'11:35', end:'12:50'}] },
+  { id: 'GSS201', title: 'ジェンダーと国際関係', instructor: 'TAKAMATSU, Kana', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:1, start:'10:10', end:'11:25'}, {day:3, start:'10:10', end:'11:25'}, {day:5, start:'10:10', end:'11:25'}] },
+  { id: 'GSS301', title: 'ジェンダー批評理論', instructor: 'KAWASAKA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'19:30'}] },
+  
+  // HPE001 & HPE003
+  { id: 'HPE001-F5', title: '健康科学(E)', instructor: 'OGAWA', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:5, start:'15:25', end:'16:40'}] },
+  { id: 'HPE001-TU2', title: '健康科学(J)', instructor: 'HASEGAWA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'10:10', end:'11:25'}] },
+  { id: 'HPE001-F6', title: '健康科学(E)', instructor: 'OGAWA', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:5, start:'16:50', end:'18:05'}] },
+  { id: 'HPE001-M5', title: '健康科学(J)', instructor: 'SATO, Kaori', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'16:40'}] },
+  { id: 'HPE001-TU3', title: '健康科学(J)', instructor: 'HASEGAWA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}] },
+  { id: 'HPE001-M3', title: '健康科学(J)', instructor: 'SATO, Kaori', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}] },
+  { id: 'HPE001-M4', title: '健康科学(J)', instructor: 'SATO, Kaori', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'14:00', end:'15:15'}] },
+  { id: 'HPE003-F4', title: '体育理論', instructor: 'HIRAKU', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'14:00', end:'15:15'}] },
+
+  // HPE005 PE エクササイズ I (全セクション網羅)
+  { id: 'HPE005-M5H', title: 'PE エクササイズⅠ', instructor: 'HASEGAWA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'16:40'}] },
+  { id: 'HPE005-M2H', title: 'PE エクササイズⅠ', instructor: 'HIGASHIYAMA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'10:10', end:'11:25'}] },
+  { id: 'HPE005-TH2Y', title: 'PE エクササイズⅠ', instructor: 'YAMAUCHI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'10:10', end:'11:25'}] },
+  { id: 'HPE005-W4G', title: 'PE エクササイズⅠ', instructor: 'GORAI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'14:00', end:'15:15'}] },
+  { id: 'HPE005-W4S', title: 'PE エクササイズⅠ', instructor: 'SATO', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'14:00', end:'15:15'}] },
+  { id: 'HPE005-M5K', title: 'PE エクササイズⅠ', instructor: 'KASAI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'16:40'}] },
+  { id: 'HPE005-F2H', title: 'PE エクササイズⅠ', instructor: 'HIGASHIYAMA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'10:10', end:'11:25'}] },
+  { id: 'HPE005-TU5H', title: 'PE エクササイズⅠ', instructor: 'HASEGAWA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'16:40'}] },
+  { id: 'HPE005-TH5G', title: 'PE エクササイズⅠ', instructor: 'GORAI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'15:25', end:'16:40'}] },
+  { id: 'HPE005-F5S', title: 'PE エクササイズⅠ', instructor: 'SATO', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'15:25', end:'16:40'}] },
+  { id: 'HPE005-TU3G', title: 'PE エクササイズⅠ', instructor: 'GORAI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}] },
+  { id: 'HPE005-TH3G', title: 'PE エクササイズⅠ', instructor: 'GORAI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'11:35', end:'12:50'}] },
+  { id: 'HPE005-M4K', title: 'PE エクササイズⅠ', instructor: 'KASAI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'14:00', end:'15:15'}] },
+  { id: 'HPE005-W3Y', title: 'PE エクササイズⅠ', instructor: 'YAMAUCHI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'11:35', end:'12:50'}] },
+  { id: 'HPE005-TU5Y', title: 'PE エクササイズⅠ', instructor: 'YAMAUCHI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'16:40'}] },
+  { id: 'HPE005-TH4G', title: 'PE エクササイズⅠ', instructor: 'GORAI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'14:00', end:'15:15'}] },
+  { id: 'HPE005-TU2G', title: 'PE エクササイズⅠ', instructor: 'GORAI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'10:10', end:'11:25'}] },
+  { id: 'HPE005-F3H', title: 'PE エクササイズⅠ', instructor: 'HIGASHIYAMA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'11:35', end:'12:50'}] },
+  { id: 'HPE005-W2H', title: 'PE エクササイズⅠ', instructor: 'HASEGAWA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'10:10', end:'11:25'}] },
+  { id: 'HPE005-W5G', title: 'PE エクササイズⅠ', instructor: 'GORAI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'16:40'}] },
+  { id: 'HPE005-TU3S', title: 'PE エクササイズⅠ', instructor: 'SATO', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}] },
+  { id: 'HPE005-TH3H', title: 'PE エクササイズⅠ', instructor: 'HIGASHIYAMA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'11:35', end:'12:50'}] },
+  { id: 'HPE005-M3H', title: 'PE エクササイズⅠ', instructor: 'HIGASHIYAMA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}] },
+  { id: 'HPE005-F2HS', title: 'PE エクササイズⅠ', instructor: 'HASEGAWA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'10:10', end:'11:25'}] },
+  { id: 'HPE005-M4H', title: 'PE エクササイズⅠ', instructor: 'HASEGAWA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'14:00', end:'15:15'}] }
+　,{ id: 'HPE005-TU2S', title: 'PE エクササイズⅠ', instructor: 'SATO', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'10:10', end:'11:25'}] },
+  { id: 'HPE005-F4S', title: 'PE エクササイズⅠ', instructor: 'SATO', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'14:00', end:'15:15'}] },
+  { id: 'HPE005-M2H', title: 'PE エクササイズⅠ', instructor: 'HASEGAWA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'10:10', end:'11:25'}] },
+  { id: 'HPE005-W5S', title: 'PE エクササイズⅠ', instructor: 'SATO', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'16:40'}] },
+  { id: 'HPE005-TH2H', title: 'PE エクササイズⅠ', instructor: 'HIGASHIYAMA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'10:10', end:'11:25'}] },
+
+  // HPE007 PE エクササイズ III
+  { id: 'HPE007-W4Y', title: 'PE エクササイズⅢ', instructor: 'YAMAUCHI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'14:00', end:'15:15'}] },
+  { id: 'HPE007-W5Y', title: 'PE エクササイズⅢ', instructor: 'YAMAUCHI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'16:40'}] },
+  { id: 'HPE007-F4H', title: 'PE エクササイズⅢ', instructor: 'HIGASHIYAMA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'14:00', end:'15:15'}] },
+  { id: 'HPE007-TH5Y', title: 'PE エクササイズⅢ', instructor: 'YAMAUCHI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'15:25', end:'16:40'}] },
+  { id: 'HPE007-TH4Y', title: 'PE エクササイズⅢ', instructor: 'YAMAUCHI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'14:00', end:'15:15'}] },
+
+  // HPE010 ティームスポーツ I
+  { id: 'HPE010-M3Y', title: 'ティームスポーツ I', instructor: 'YAMAUCHI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}] },
+  { id: 'HPE010-M5Y', title: 'ティームスポーツ I', instructor: 'YAMAUCHI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'16:40'}] },
+  { id: 'HPE010-M5H', title: 'ティームスポーツ I', instructor: 'HONDA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'16:40'}] },
+  { id: 'HPE010-M4H', title: 'ティームスポーツ I', instructor: 'HONDA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'14:00', end:'15:15'}] },
+  { id: 'HPE010-TU5G', title: 'ティームスポーツ I', instructor: 'GORAI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'16:40'}] },
+
+  // HPE011 ティームスポーツ II
+  { id: 'HPE011-W3H', title: 'ティームスポーツ II', instructor: 'HASEGAWA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'11:35', end:'12:50'}] },
+
+  // HPE012 初級対人スポーツ
+  { id: 'HPE012-F2O', title: '初級対人スポーツ', instructor: 'OKADA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'10:10', end:'11:25'}] },
+  { id: 'HPE012-F3O', title: '初級対人スポーツ', instructor: 'OKADA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'11:35', end:'12:50'}] },
+  { id: 'HPE012-F4G', title: '初級対人スポーツ', instructor: 'GORAI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'14:00', end:'15:15'}] },
+  { id: 'HPE012-F5G', title: '初級対人スポーツ', instructor: 'GORAI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'15:25', end:'16:40'}] },
+
+  // HPE014 初級個人スポーツ
+  { id: 'HPE014-F3H', title: '初級個人スポーツ', instructor: 'HASHIGUCHI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'11:35', end:'12:50'}] },
+  { id: 'HPE014-F2H', title: '初級個人スポーツ', instructor: 'HASHIGUCHI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'10:10', end:'11:25'}] },
+  { id: 'HPE014-M2O', title: '初級個人スポーツ', instructor: 'OKA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'10:10', end:'11:25'}] },
+  { id: 'HPE014-M3O', title: '初級個人スポーツ', instructor: 'OKA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}] },
+  { id: 'HPE014-F3S', title: '初級個人スポーツ', instructor: 'SATO', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'11:35', end:'12:50'}] },
+
+  // HPE016 初級個人試技活動
+  { id: 'HPE016-TH3H', title: '初級個人試技活動', instructor: 'HIRATA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'11:35', end:'12:50'}] },
+  { id: 'HPE016-TH2H', title: '初級個人試技活動', instructor: 'HIRATA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'10:10', end:'11:25'}] },
+  { id: 'HPE016-M4H', title: '初級個人試技活動', instructor: 'HIGASHIYAMA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'14:00', end:'15:15'}] },
+
+  // HPE021 初級リズムダンス
+  { id: 'HPE021-F3Y', title: '初級リズムダンス', instructor: 'YOSHINO', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'11:35', end:'12:50'}] },
+  { id: 'HPE021-F2Y', title: '初級リズムダンス', instructor: 'YOSHINO', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'10:10', end:'11:25'}] },
+  { id: 'HPE021-TU2K', title: '初級リズムダンス', instructor: 'KAMATSUKA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'10:10', end:'11:25'}] },
+  { id: 'HPE021-TU3K', title: '初級リズムダンス', instructor: 'KAMATSUKA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}] },
+  { id: 'HPE021-TU3S', title: '初級リズムダンス', instructor: 'SENDA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}] },
+  { id: 'HPE021-TU2S', title: '初級リズムダンス', instructor: 'SENDA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'10:10', end:'11:25'}] },
+  { id: 'HPE021-W2K', title: '初級リズムダンス', instructor: 'KASAI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'10:10', end:'11:25'}] },
+  { id: 'HPE021-W3K', title: '初級リズムダンス', instructor: 'KASAI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'11:35', end:'12:50'}] },
+
+  // HPE023 / HPE024
+  { id: 'HPE023-F3H', title: 'ゲームとクラフト', instructor: 'HASEGAWA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'11:35', end:'12:50'}] },
+  { id: 'HPE024', title: 'アダプテッド体育', instructor: 'STAFF', lang: 'J', location: 'TBD', isSuper: false, periods: [] },
+
+  // 歴史学 HST
+  { id: 'HST102', title: '西洋史（イギリス）I', instructor: 'NASU, Kei', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'HST104', title: '日本史（古代・中世）I', instructor: 'NAKAI, Maki', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:6, start:'08:45', end:'12:50'}] },
+  { id: 'HST211', title: '歴史学研究方法', instructor: 'TSUBAKIDA / NASU', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:1, start:'15:25', end:'17:20'}, {day:4, start:'15:25', end:'17:20'}] },
+  { id: 'HST223', title: '近世日本の社会と文化', instructor: 'TSUBAKIDA', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'HST233', title: '南アジア史（インド）', instructor: 'UNO, Ayako', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'15:25', end:'18:05'}] },
+  { id: 'HST237', title: '韓国史', instructor: 'ROKUTANDA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'18:05'}] },
+  { id: 'HST245', title: 'ヨーロッパ社会史', instructor: 'SUZUKI, Yoshikazu', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'19:30'}] },
+  { id: 'HST251', title: 'ラテンアメリカ史', instructor: 'FUSHIMI, Takeshi', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'15:25', end:'18:05'}] },
+  { id: 'HST265', title: 'アジアのなかの日本', instructor: 'TAKANO, Minoru', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}] },
+  { id: 'HST323', title: '近現代日本史特別研究', instructor: 'GODO, Natsuko', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'15:25', end:'19:30'}] },
+  { id: 'HST331', title: 'アジア社会史特別研究', instructor: 'TAKANO, Minoru', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:3, start:'15:25', end:'17:20'}, {day:5, start:'15:25', end:'17:20'}] },
+
+  // 国際関係学 IRL
+  { id: 'IRL102', title: '国際関係学概論', instructor: 'MORI, Katsuhiko', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] }
+// 国際関係学 IRL
+  ,{ id: 'IRL214', title: '国際政治経済学', instructor: 'MIURA, Hideyuki', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:4, start:'08:45', end:'11:25'}] },
+  { id: 'IRL215', title: 'ナショナリズム研究', instructor: 'SHANI', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:1, start:'14:00', end:'15:15'}, {day:4, start:'14:00', end:'15:15'}] },
+  { id: 'IRL233', title: 'アフリカの政治と国際関係', instructor: 'SALTON', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'16:40'}, {day:4, start:'15:25', end:'16:40'}] },
+  { id: 'IRL237', title: 'ラテンアメリカの政治と国際関係', instructor: 'OHGUSHI, Kazuo', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'18:05'}] },
+
+  // 情報科学 ISC
+  { id: 'ISC103', title: 'コンピュータ基礎', instructor: 'TANAKA, Hiroki', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'ISC221', title: 'アルゴリズムとデータ構造', instructor: 'ANDO', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'19:30'}] },
+  { id: 'ISC222', title: 'コンピュータ言語', instructor: 'TANAKA, Hiroki', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:5, start:'15:25', end:'19:30'}] },
+  { id: 'ISC224', title: 'オペレーティングシステム', instructor: 'KABURAGI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}] },
+  { id: 'ISC314', title: '数値解析入門', instructor: 'KABURAGI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'18:05'}] },
+  { id: 'ISC351', title: 'コンピュータゲーム', instructor: 'OHTA, Keiji', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'15:25', end:'18:05'}] },
+
+  // 日本語教育プログラム JLP (週10コマ等の集中コース)
+  { id: 'JLP011', title: '日本語J1', instructor: 'MIYAMOTO / ASHIKI', lang: 'J', location: 'TBD', isSuper: false, periods: [
+    {day:1, start:'08:45', end:'11:25'}, {day:2, start:'08:45', end:'11:25'}, {day:3, start:'08:45', end:'12:50'}, {day:5, start:'08:45', end:'12:50'}
+  ]},
+  { id: 'JLP012', title: '日本語J2', instructor: 'MIURA / KOH', lang: 'J', location: 'TBD', isSuper: false, periods: [
+    {day:1, start:'08:45', end:'11:25'}, {day:2, start:'08:45', end:'11:25'}, {day:3, start:'08:45', end:'12:50'}, {day:5, start:'08:45', end:'12:50'}
+  ]},
+  { id: 'JLP028', title: '日本語J7-A', instructor: 'OZAWA et al.', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'08:45', end:'11:25'}, {day:3, start:'08:45', end:'11:25'}] },
+  { id: 'JLP036', title: '上級日本語：論文作成法', instructor: 'KOH, Tomoko', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'14:00', end:'16:40'}] },
+  { id: 'JLP071', title: '日本語特別教育 漢字1', instructor: 'MIURA, Ayano', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'14:00', end:'15:15'}] },
+
+  // 日本研究 / 法学 LAW
+  { id: 'JPS101', title: '日本研究概論', instructor: 'SONOYAMA, Senri', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:3, start:'13:20', end:'15:15'}, {day:5, start:'13:20', end:'15:15'}] },
+  { id: 'LAW103', title: '日本国憲法', instructor: 'MATSUDA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'LAW203', title: '民法 I', instructor: 'KAMIGOCHI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'18:05'}] },
+  { id: 'LAW206', title: '憲法', instructor: 'MATSUDA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}, {day:4, start:'08:45', end:'10:00'}] },
+  { id: 'LAW225', title: '国際環境法', instructor: 'AYCOCK', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'12:50'}] },
+  { id: 'LAW226', title: '国際難民法', instructor: 'HASHIMOTO, Naoko', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:3, start:'15:25', end:'17:20'}, {day:5, start:'15:25', end:'17:20'}] },
+  { id: 'LAW306', title: '国際人権法', instructor: 'ARAKAKI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'08:45', end:'10:00'}, {day:3, start:'08:45', end:'10:00'}, {day:5, start:'08:45', end:'10:00'}] },
+
+  // 言語教育 LED
+  { id: 'LED102', title: '言語教授法原論', instructor: 'SUGA, Kiyotaka', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'19:30'}] },
+  { id: 'LED215', title: '教授用音声学と音韻論', instructor: 'QUAY, Suzanne', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:1, start:'15:25', end:'17:20'}, {day:4, start:'15:25', end:'17:20'}] },
+  { id: 'LED231', title: '言語教育のための英語学', instructor: 'SHIROZA, Saran', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'10:10', end:'11:25'}, {day:3, start:'10:10', end:'11:25'}, {day:5, start:'10:10', end:'11:25'}] },
+  { id: 'LED235', title: '英語科教育法III', instructor: 'FUJII, Akiko', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:3, start:'15:25', end:'17:20'}, {day:5, start:'15:25', end:'17:20'}] },
+  { id: 'LED251', title: '日本語史 I', instructor: 'HIRAHARA, Maki', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'19:30'}] },
+  { id: 'LED271', title: '書道', instructor: 'UCHIYAMA, Yumi', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:6, start:'08:45', end:'12:50'}] },
+  { id: 'LED361', title: '外国語としての日本語教授法III', instructor: 'HANDA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'08:45', end:'10:00'}, {day:3, start:'08:45', end:'10:00'}, {day:5, start:'08:45', end:'10:00'}] },
+
+  // 文学 LIT
+  { id: 'LIT102', title: 'ギリシア語 I', instructor: 'SANO, Yoshinori', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'10:10', end:'11:25'}, {day:3, start:'10:10', end:'11:25'}, {day:5, start:'10:10', end:'11:25'}] },
+  { id: 'LIT104', title: 'アメリカ文学史 I', instructor: 'RAVENSCROFT', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'LIT115', title: 'ラテン語 I', instructor: 'TOMOI, Taro', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'18:05'}] }
+// 文学 LIT
+  ,{ id: 'LIT214', title: '西洋古典文学 IV', instructor: 'TAKI, Akitsugu', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'15:25', end:'18:05'}] },
+  { id: 'LIT216', title: 'ギリシア語講読 II', instructor: 'SANO, Yoshinori', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'14:00', end:'15:15'}, {day:4, start:'14:00', end:'15:15'}] },
+  { id: 'LIT223', title: '現代英文学 II', instructor: 'SIMONS', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:3, start:'15:25', end:'17:20'}, {day:5, start:'15:25', end:'17:20'}] },
+  { id: 'LIT225', title: 'ルネサンス英文学', instructor: 'MATSUDA, Takami', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'15:25', end:'18:05'}] },
+  { id: 'LIT241', title: 'フランス詩Ｉ', instructor: 'HAMANAGA, Kazuki', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'19:30'}] },
+  { id: 'LIT261', title: '古代日本文学 I', instructor: 'SONOYAMA, Senri', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}, {day:4, start:'08:45', end:'10:00'}] },
+  { id: 'LIT263', title: '中世日本文学', instructor: 'WATANABE, Mariko', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'15:25', end:'19:30'}] },
+  { id: 'LIT265', title: '近・現代日本文学 I', instructor: 'YASUHARA, Makoto', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'10:10', end:'11:25'}, {day:3, start:'10:10', end:'11:25'}, {day:5, start:'10:10', end:'11:25'}] },
+  { id: 'LIT272', title: '世界の文学 II', instructor: 'MYOJO, Kiyoko', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'19:30'}] },
+  { id: 'LIT374', title: 'クイア理論における先進的研究', instructor: 'AMMOUR-MAYEUR', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}, {day:4, start:'08:45', end:'10:00'}] },
+
+  // 言語学 LNG
+  { id: 'LNG102', title: '言語学入門 II', instructor: 'LEE, Seunghun', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'LNG222', title: '統語論', instructor: 'ONO, Hajime', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'LNG223', title: '実験言語学', instructor: 'ONO, Hajime', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}] },
+  { id: 'LNG391', title: '言語学特別研究 II', instructor: 'LEE, Seunghun', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:3, start:'15:25', end:'17:20'}, {day:5, start:'15:25', end:'17:20'}] },
+  { id: 'LNG392', title: '言語学上級セミナー I', instructor: 'KUBOZONO, Haruo', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'18:05'}] },
+
+  // コミュニケーション MCC
+  { id: 'MCC105', title: 'ヒューマン・コミュニケーション原論', instructor: 'AONUMA, Satoru', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}, {day:3, start:'11:35', end:'12:50'}, {day:5, start:'11:35', end:'12:50'}] },
+  { id: 'MCC108', title: '翻訳入門', instructor: 'GARZA', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:3, start:'13:20', end:'15:15'}, {day:5, start:'13:20', end:'15:15'}] },
+  { id: 'MCC235', title: 'メディア通訳', instructor: 'TAMURA, Tomoko', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'MCC236', title: '創造する翻訳', instructor: 'HE, Beibei', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:6, start:'08:45', end:'12:50'}] },
+  { id: 'MCC238', title: '社会と翻訳', instructor: 'GARZA', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:1, start:'10:10', end:'11:25'}, {day:3, start:'10:10', end:'11:25'}, {day:5, start:'10:10', end:'11:25'}] },
+  { id: 'MCC253', title: 'カルチュラル・スタディーズII', instructor: 'TAKAHARA, Taichi', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'19:30'}] },
+  { id: 'MCC256', title: 'メディア研究入門', instructor: 'FUJITANI, Takeshi', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:3, start:'15:25', end:'17:20'}, {day:5, start:'15:25', end:'17:20'}] },
+  { id: 'MCC257', title: 'メディアと多文化社会', instructor: 'TSE, Yu-Kei', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}] },
+  { id: 'MCC273', title: '異文化コミュニケーション', instructor: 'HONG, Seung Min', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:1, start:'15:25', end:'17:20'}, {day:4, start:'15:25', end:'17:20'}] },
+  { id: 'MCC331', title: '実践通訳上級', instructor: 'TAMURA, Tomoko', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:1, start:'15:25', end:'17:20'}, {day:4, start:'15:25', end:'17:20'}] },
+  { id: 'MCC372', title: 'コミュニケーション学の人文学アプローチ', instructor: 'AONUMA, Satoru', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'MCC384', title: 'メディア論特別研究', instructor: 'TSE, Yu-Kei', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+
+  // 数学 MTH
+  { id: 'MTH102', title: '数学入門', instructor: 'MATSUMURA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'10:10', end:'12:50'}, {day:1, start:'16:50', end:'19:30'}] },
+  { id: 'MTH211-J', title: '微分積分学Ⅱ(J)', instructor: 'YAMAZAKI, Mitsuru', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'19:30'}] },
+  { id: 'MTH211-E', title: '微分積分学Ⅱ(E)', instructor: 'HITZER', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'16:40'}, {day:5, start:'15:25', end:'18:05'}] },
+  { id: 'MTH232', title: '数学通論 I', instructor: 'SHIMIZU, Yuji', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'19:30'}] },
+  { id: 'MTH233', title: '線形代数学 II', instructor: 'TSUCHIYA', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:4, start:'15:25', end:'19:30'}] },
+  { id: 'MTH311', title: '解析学 I', instructor: 'NAKAISHI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'19:30'}] },
+  { id: 'MTH382-SA1', title: '数学特別演習 I', instructor: 'YAMAZAKI', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:6, start:'08:45', end:'11:25'}] },
+  { id: 'MTH382-SA6', title: '数学特別演習 I', instructor: 'MATSUMURA', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:6, start:'16:50', end:'19:30'}] },
+
+  // 音楽 MUS
+  { id: 'MUS104', title: '西洋の音楽 I', instructor: 'TAGAWA, Mayu', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'10:10', end:'12:50'}] },
+  { id: 'MUS105', title: '基礎音楽理論 I', instructor: 'TAMURA, Harumi', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'18:05'}] },
+  { id: 'MUS212', title: '近現代日本の音楽', instructor: 'GILLAN', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'MUS213', title: '現代メディアと音楽', instructor: 'CHOKI, Seiji', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'18:05'}] },
+  { id: 'MUS214', title: '音楽演奏研究 I', instructor: 'HATANO, Mutsumi', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'18:05'}] },
+  { id: 'MUS381', title: '音楽フィールドワーク', instructor: 'GILLAN', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:1, start:'15:25', end:'17:20'}, {day:4, start:'15:25', end:'17:20'}] },
+
+  // 平和研究 / 哲学 / 宗教 PCS / PHR
+  { id: 'PCS101', title: '平和研究 I', instructor: 'SASAKI, Moe', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:4, start:'15:25', end:'19:30'}] },
+  { id: 'PCS201', title: '平和と人権', instructor: 'AKIYAMA, Hajime', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'18:05'}] },
+  { id: 'PHR106', title: '哲学概論', instructor: 'ALBERG', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'PHR107', title: '宗教学概論', instructor: 'NAMIKI, Eiko', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'10:10', end:'11:25'}, {day:3, start:'10:10', end:'11:25'}, {day:5, start:'10:10', end:'11:25'}] }
+// 哲学・宗教学 PHR
+  ,{ id: 'PHR115', title: '論理学', instructor: 'YOTSU, Masahide', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'15:25', end:'18:05'}] },
+  { id: 'PHR223', title: '古代・中世哲学史', instructor: 'SANO, Yoshinori', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:1, start:'08:45', end:'10:00'}, {day:3, start:'08:45', end:'10:00'}, {day:5, start:'08:45', end:'10:00'}] },
+  { id: 'PHR226', title: '旧約ヘブライ語', instructor: 'RO, Johannes Unsok', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:1, start:'15:25', end:'17:20'}, {day:4, start:'15:25', end:'17:20'}] },
+  { id: 'PHR232', title: '新約聖書学概観', instructor: 'YAKIYAMA, Mariko', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:3, start:'15:25', end:'17:20'}, {day:5, start:'15:25', end:'17:20'}] },
+  { id: 'PHR238', title: '新約聖書の解釈と倫理', instructor: 'YAKIYAMA, Mariko', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}, {day:4, start:'08:45', end:'10:00'}] },
+  { id: 'PHR245', title: 'キリスト教神学', instructor: 'MCGLOTHLIN', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:1, start:'10:10', end:'11:25'}, {day:3, start:'10:10', end:'11:25'}, {day:5, start:'10:10', end:'11:25'}] },
+  { id: 'PHR382', title: '東洋思想研究', instructor: 'ESKILDSEN', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:3, start:'15:25', end:'17:20'}, {day:5, start:'15:25', end:'17:20'}] },
+  { id: 'PHR384', title: '現代哲学史研究', instructor: 'TAMURA, Miki', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'10:10', end:'11:25'}, {day:3, start:'10:10', end:'11:25'}, {day:5, start:'10:10', end:'11:25'}] },
+  { id: 'PHR385', title: '組織神学研究', instructor: 'MCGLOTHLIN', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+
+  // 物理学 PHY
+  { id: 'PHY105', title: '基礎物理学実験', instructor: 'OKANO / KAKINUMA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'15:25', end:'19:30'}] },
+  { id: 'PHY106', title: '最先端の物理学', instructor: 'HITZER et al.', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'11:35', end:'12:50'}, {day:5, start:'11:35', end:'12:50'}] },
+  { id: 'PHY107', title: 'モノづくり入門', instructor: 'YAMAZAKI et al.', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'15:25', end:'19:30'}] },
+  { id: 'PHY201', title: '自然科学のための数学', instructor: 'HITZER', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}] },
+  { id: 'PHY211', title: '光学実験', instructor: 'KAMATA, Masahiro', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'19:30'}] },
+  { id: 'PHY221', title: '電磁気学', instructor: 'YOKOJIMA / SHINDO', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'PHY231', title: '現代物理学', instructor: 'TEZUKA, Ayako', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'10:10', end:'12:50'}] },
+  { id: 'PHY381', title: '解析力学と相対性理論', instructor: 'KOTANI, Taro', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:5, start:'15:25', end:'18:05'}] },
+
+  // 政治学 POL / 公共政策 PPL
+  { id: 'POL101', title: '政治学方法論入門', instructor: 'COLLET', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'POL103', title: '政治学概論', instructor: 'KOO, Yoojin', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'POL211', title: '西欧政治思想史 I', instructor: 'KONDO, Kazutaka', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'18:05'}] },
+  { id: 'POL215', title: '政治理論', instructor: 'OBA, Dai', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'19:30'}] },
+  { id: 'POL216', title: '日本政治思想史', instructor: 'OKUBO, Takeharu', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'18:05'}] },
+  { id: 'POL236', title: '世論研究', instructor: 'COLLET', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}, {day:4, start:'08:45', end:'10:00'}] },
+  { id: 'POL383', title: '政治学特別研究 III', instructor: 'TAKAMATSU, Kana', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:3, start:'15:25', end:'17:20'}, {day:5, start:'15:25', end:'17:20'}] },
+  { id: 'PPL101', title: '政策分析入門', instructor: 'PORTEUX', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'PPL203', title: '比較政治制度論', instructor: 'PORTEUX', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}, {day:4, start:'08:45', end:'10:00'}] },
+
+  // 心理学 PSY
+  { id: 'PSY101', title: '教育心理学', instructor: 'HAGIWARA, Chiaki', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'15:25', end:'18:05'}] },
+  { id: 'PSY103', title: '現代心理学入門', instructor: 'NAOI / NISHIMURA', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:1, start:'11:35', end:'12:50'}, {day:3, start:'11:35', end:'12:50'}, {day:5, start:'11:35', end:'12:50'}] },
+  { id: 'PSY221', title: '心理学実験', instructor: 'NAOI, Nozomi', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'PSY261', title: '文化と心理学', instructor: 'KAVANAGH', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'19:30'}] },
+  { id: 'PSY271', title: '臨床心理学', instructor: 'NISHIMURA, Kaoru', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}, {day:4, start:'08:45', end:'10:00'}] },
+  { id: 'PSY273', title: '精神保健', instructor: 'CHAN, Christian', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:1, start:'10:10', end:'11:25'}, {day:3, start:'10:10', end:'11:25'}, {day:5, start:'10:10', end:'11:25'}] },
+  { id: 'PSY321', title: '多変量解析', instructor: 'CHAN, Christian', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'18:05'}] },
+
+  // SLR / 社会学 SOC
+  { id: 'SLR101', title: 'サービス・ラーニング概論', instructor: 'KATO / KURONUMA', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:4, start:'10:10', end:'12:50'}, {day:6, start:'15:25', end:'18:05'}] },
+  { id: 'SOC102-E', title: '社会学原論(E)', instructor: 'KIM, Allen', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'SOC102-J', title: '社会学原論(J)', instructor: 'NAKANO, Yuichi', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'15:25', end:'19:30'}] },
+  { id: 'SOC103', title: '社会学的研究へのアプローチ', instructor: 'NA, Ildeung', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'11:35', end:'12:50'}, {day:4, start:'10:10', end:'12:50'}] },
+  { id: 'SOC205', title: '日本社会入門', instructor: 'MOROI, Yuichi', lang: 'E', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'SOC211-E', title: '家族社会学(E)', instructor: 'KIM, Allen', lang: 'E', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'11:25'}, {day:4, start:'08:45', end:'10:00'}] },
+  { id: 'SOC211-J', title: '家族社会学(J)', instructor: 'KUBOTA, Hiroyuki', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'19:30'}] },
+  { id: 'SOC212', title: '都市社会学', instructor: 'NAKANO, Yuichi', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'19:30'}] },
+  { id: 'SOC302', title: '質的社会学分析 I', instructor: 'YAMAGUCHI, Tomiko', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'15:15'}, {day:4, start:'13:20', end:'15:15'}] },
+  { id: 'SOC304', title: '計量社会学分析 I', instructor: 'NA, Ildeung', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:1, start:'15:25', end:'17:20'}, {day:4, start:'15:25', end:'17:20'}] },
+  { id: 'SOC309', title: '科学技術社会学', instructor: 'YAMAGUCHI, Tomiko', lang: 'J', location: 'TBD', isSuper: true, periods: [{day:1, start:'15:25', end:'17:20'}, {day:4, start:'15:25', end:'17:20'}] }
+// 教育学 TCP
+  ,{ id: 'TCP210', title: '理科教育法 III', instructor: 'KAMATA, Masahiro', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'18:05'}] },
+  { id: 'TCP218', title: '社会科・地理歴史科教育法 I', instructor: 'JIN, Kumiko', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'18:05'}] },
+  { id: 'TCP245', title: '地誌', instructor: 'YAMAMOTO, Ryuta', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'10:10', end:'12:50'}] },
+  { id: 'TCP253', title: '世界史概論', instructor: 'ISHIWATA, Takumi', lang: 'J', location: 'TBD', isSuper: false, periods: [{day:4, start:'15:25', end:'18:05'}] },
+
+  // アラビア語 WAB
+  { id: 'WAB101', title: 'アラビア語 I', instructor: 'KINOSHITA / ABUSINNA', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'19:30'}, {day:5, start:'15:25', end:'19:30'}] },
+
+  // 中国語 WCN
+  { id: 'WCN101-M5', title: '中国語 I', instructor: 'KAWASHIMA / ZHAN', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'19:30'}, {day:4, start:'15:25', end:'19:30'}] },
+  { id: 'WCN101-TU1', title: '中国語 I', instructor: 'ZHAN / SAWADA', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'12:50'}, {day:4, start:'08:45', end:'12:50'}] },
+  { id: 'WCN101-TU1Q', title: '中国語 I', instructor: 'QI / SHI', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'12:50'}, {day:4, start:'08:45', end:'12:50'}] },
+  { id: 'WCN101-TU5', title: '中国語 I', instructor: 'QI / KAWASHIMA', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'19:30'}, {day:4, start:'15:25', end:'19:30'}] },
+  { id: 'WCN201', title: '上級中国語 I', instructor: 'QI, Hong', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:4, start:'08:45', end:'12:50'}] },
+
+  // フランス語 WFR
+  { id: 'WFR101-W4', title: 'フランス語 I', instructor: 'DAIZEN / BELEC', lang: 'O', location: 'TBD', isSuper: true, periods: [{day:3, start:'13:20', end:'17:20'}, {day:5, start:'13:20', end:'17:20'}] },
+  { id: 'WFR101-M4', title: 'フランス語 I', instructor: 'BUREAU / BELEC', lang: 'O', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'17:20'}, {day:4, start:'13:20', end:'17:20'}] },
+  { id: 'WFR101-TU1', title: 'フランス語 I', instructor: 'DAIZEN / PIRIOU', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'12:50'}, {day:4, start:'08:45', end:'12:50'}] },
+  { id: 'WFR101-M5', title: 'フランス語 I', instructor: 'SHIRAISHI / BUREAU', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'19:30'}, {day:4, start:'15:25', end:'19:30'}] },
+  { id: 'WFR202-W', title: '上級フランス語I', instructor: 'BELEC', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'19:30'}] },
+  { id: 'WFR202-F', title: '上級フランス語I', instructor: 'DONATI', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:5, start:'15:25', end:'19:30'}] },
+
+  // ドイツ語 WGR / イタリア語 WIT
+  { id: 'WGR101-TU5', title: 'ドイツ語 I', instructor: 'ENDO / BARTSCH', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'19:30'}, {day:4, start:'15:25', end:'19:30'}] },
+  { id: 'WGR101-W5', title: 'ドイツ語 I', instructor: 'ENDO / BACKHAUS', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'19:30'}, {day:5, start:'15:25', end:'19:30'}] },
+  { id: 'WGR201', title: '上級ドイツ語 I', instructor: 'BARTSCH', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'19:30'}] },
+  { id: 'WIT101', title: 'イタリア語 I', instructor: 'NAKAYA / BUCCI', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'19:30'}, {day:5, start:'15:25', end:'19:30'}] },
+
+  // 韓国語 WKR
+  { id: 'WKR101-M4', title: '韓国語 I', instructor: 'HANDO / OHE', lang: 'O', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'17:20'}, {day:4, start:'13:20', end:'17:20'}] },
+  { id: 'WKR101-TU1', title: '韓国語 I', instructor: 'KIM / HANDO', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'12:50'}, {day:4, start:'08:45', end:'12:50'}] },
+  { id: 'WKR101-TU5', title: '韓国語 I', instructor: 'KIM, Myeong-Hee', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:2, start:'15:25', end:'19:30'}, {day:4, start:'15:25', end:'19:30'}] },
+  { id: 'WKR101-W4', title: '韓国語 I', instructor: 'KIM / OHE', lang: 'O', location: 'TBD', isSuper: true, periods: [{day:3, start:'13:20', end:'17:20'}, {day:5, start:'13:20', end:'17:20'}] },
+  { id: 'WKR201', title: '上級韓国語 I', instructor: 'OHE', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:3, start:'15:25', end:'19:30'}] },
+
+  // ロシア語 WRU / スペイン語 WSP
+  { id: 'WRU101', title: 'ロシア語 I', instructor: 'FUKASAWA / GOTO', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'19:30'}, {day:4, start:'15:25', end:'19:30'}] },
+  { id: 'WSP101-TU1', title: 'スペイン語 I', instructor: 'NASU / ALCANIZ', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:2, start:'08:45', end:'12:50'}, {day:4, start:'08:45', end:'12:50'}] },
+  { id: 'WSP101-M4', title: 'スペイン語 I', instructor: 'ROQUE / NASU', lang: 'O', location: 'TBD', isSuper: true, periods: [{day:1, start:'13:20', end:'17:20'}, {day:4, start:'13:20', end:'17:20'}] },
+  { id: 'WSP101-W4', title: 'スペイン語 I', instructor: 'CUBILLOS / VEGA', lang: 'O', location: 'TBD', isSuper: true, periods: [{day:3, start:'13:20', end:'17:20'}, {day:5, start:'13:20', end:'17:20'}] },
+  { id: 'WSP101-M5', title: 'スペイン語 I', instructor: 'CUBILLOS / ROQUE / ALCANIZ', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'18:05'}, {day:2, start:'15:25', end:'18:05'}, {day:4, start:'15:25', end:'18:05'}] },
+  { id: 'WSP201', title: '上級スペイン語 I', instructor: 'GARCIA BERNAL', lang: 'O', location: 'TBD', isSuper: false, periods: [{day:1, start:'15:25', end:'19:30'}] }
+];
 
         let activeData = [];
 
