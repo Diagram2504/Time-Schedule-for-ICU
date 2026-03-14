@@ -412,5 +412,83 @@
         renderSyllabusList();
         document.getElementById('search-input').oninput = (e) => renderSyllabusList(e.target.value);
     </script>
+    /* --- スマホ表示用追加スクリプト --- */
+(function() {
+    // 1. ビューポート・表示の調整
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @media (max-width: 768px) {
+            main { flex-direction: column !important; overflow-y: auto !important; }
+            aside { width: 100% !important; height: auto !important; max-height: none !important; border-r: 0; border-b: 1px solid #e2e8f0; }
+            #capture-area { padding: 10px !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+            #timetable-card { min-width: 800px; } /* スマホでも横スクロールで表の形を維持 */
+            .course-block { padding: 2px 4px !important; }
+            .time-tag-top, .time-tag-bottom { font-size: 8px !important; padding: 0 3px !important; }
+            .delete-btn { width: 20px !important; height: 20px !important; font-size: 14px !important; } /* スマホで押しやすく */
+        }
+    `;
+    document.head.appendChild(style);
+
+    // 2. タッチ操作によるドラッグ＆ドロップの代替実装
+    // シラバス一覧のアイテムをタップすると、その科目が選択状態になり、
+    // 次に時間割の空きスペース（ドロップゾーン）をタップすると配置される仕組み
+    let selectedCourse = null;
+
+    function handleSyllabusTap(e) {
+        if (window.innerWidth > 768) return; // PC版は既存のドラッグを生かす
+        
+        const item = e.currentTarget;
+        const courseData = JSON.parse(item.getAttribute('data-course-json') || '{}');
+        
+        // 選択状態の視覚効果
+        document.querySelectorAll('#syllabus-list > div').forEach(el => el.classList.remove('ring-4', 'ring-blue-400'));
+        
+        if (selectedCourse && selectedCourse.id === courseData.id) {
+            selectedCourse = null;
+            alert("選択を解除しました");
+        } else {
+            selectedCourse = courseData;
+            item.classList.add('ring-4', 'ring-blue-400');
+            // スマホ向けガイド
+            const guide = document.createElement('div');
+            guide.id = "mobile-guide";
+            guide.className = "fixed bottom-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-6 py-3 rounded-full text-xs font-bold z-[100] shadow-2xl";
+            guide.innerText = "配置したい曜日（列）をタップしてください";
+            if (!document.getElementById('mobile-guide')) document.body.appendChild(guide);
+            setTimeout(() => guide?.remove(), 3000);
+        }
+    }
+
+    // 既存の renderSyllabusList を拡張してスマホ用イベントを付与
+    const originalRender = window.renderSyllabusList;
+    window.renderSyllabusList = function(filter) {
+        originalRender(filter);
+        if (window.innerWidth <= 768) {
+            document.querySelectorAll('#syllabus-list > div').forEach(el => {
+                // ドラッグデータを属性に保存
+                const mockEvent = { dataTransfer: { setData: (k, v) => el.setAttribute('data-course-json', v) } };
+                el.ondragstart(mockEvent);
+                el.onclick = handleSyllabusTap;
+            });
+        }
+    };
+
+    // グリッド（列）へのタップイベント
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth > 768 || !selectedCourse) return;
+        
+        const dropZone = e.target.closest('.drop-zone');
+        if (dropZone) {
+            addCourseToGrid(selectedCourse);
+            selectedCourse = null;
+            document.querySelectorAll('#syllabus-list > div').forEach(el => el.classList.remove('ring-4', 'ring-blue-400'));
+            document.getElementById('mobile-guide')?.remove();
+        }
+    });
+
+    // 3. 初期実行
+    window.renderSyllabusList();
+})();
+
 </body>
 </html>
