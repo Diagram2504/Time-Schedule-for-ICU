@@ -412,83 +412,112 @@
         renderSyllabusList();
         document.getElementById('search-input').oninput = (e) => renderSyllabusList(e.target.value);
     </script>
-    /* --- スマホ表示用追加スクリプト --- */
+/* --- スマホ表示完全最適化スクリプト --- */
 (function() {
-    // 1. ビューポート・表示の調整
-    const style = document.createElement('style');
-    style.innerHTML = `
+    const mobileStyle = document.createElement('style');
+    mobileStyle.innerHTML = `
         @media (max-width: 768px) {
-            main { flex-direction: column !important; overflow-y: auto !important; }
-            aside { width: 100% !important; height: auto !important; max-height: none !important; border-r: 0; border-b: 1px solid #e2e8f0; }
-            #capture-area { padding: 10px !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
-            #timetable-card { min-width: 800px; } /* スマホでも横スクロールで表の形を維持 */
-            .course-block { padding: 2px 4px !important; }
-            .time-tag-top, .time-tag-bottom { font-size: 8px !important; padding: 0 3px !important; }
-            .delete-btn { width: 20px !important; height: 20px !important; font-size: 14px !important; } /* スマホで押しやすく */
+            /* 1. 全体レイアウトの縦並び化 */
+            body { overflow: auto !important; height: auto !important; }
+            main { flex-direction: column !important; overflow: visible !important; height: auto !important; }
+            
+            /* 2. サイドバー（入力エリア）の調整 */
+            aside { 
+                width: 100% !important; 
+                height: auto !important; 
+                max-height: none !important; 
+                position: relative !important;
+                border-right: none !important;
+                border-bottom: 4px solid #3b82f6 !important;
+            }
+            #syllabus-list { max-height: 400px; overflow-y: auto; }
+
+            /* 3. 時間割表示エリアのスクロール確保 */
+            #capture-area { 
+                padding: 10px !important; 
+                overflow-x: auto !important; /* 横スクロールを強制 */
+                background-color: #f1f5f9 !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            #timetable-card { 
+                min-width: 850px !important; /* 表が潰れないための最小幅 */
+                margin: 0 auto;
+            }
+
+            /* 4. タップ操作の改善 */
+            .course-block { 
+                padding: 2px 4px !important; 
+                min-height: 50px; 
+            }
+            .delete-btn { 
+                width: 24px !important; 
+                height: 24px !important; 
+                font-size: 16px !important; 
+                top: -5px !important; 
+                right: -5px !important; 
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            }
+            
+            /* 5. ヘッダーの微調整 */
+            header { padding: 10px !important; flex-wrap: wrap; gap: 8px; }
+            header h1 { font-size: 16px !important; }
         }
     `;
-    document.head.appendChild(style);
+    document.head.appendChild(mobileStyle);
 
-    // 2. タッチ操作によるドラッグ＆ドロップの代替実装
-    // シラバス一覧のアイテムをタップすると、その科目が選択状態になり、
-    // 次に時間割の空きスペース（ドロップゾーン）をタップすると配置される仕組み
+    // スマホ用：ドラッグ＆ドロップの代わりに「タップで配置」
     let selectedCourse = null;
 
-    function handleSyllabusTap(e) {
-        if (window.innerWidth > 768) return; // PC版は既存のドラッグを生かす
-        
-        const item = e.currentTarget;
-        const courseData = JSON.parse(item.getAttribute('data-course-json') || '{}');
-        
-        // 選択状態の視覚効果
-        document.querySelectorAll('#syllabus-list > div').forEach(el => el.classList.remove('ring-4', 'ring-blue-400'));
-        
-        if (selectedCourse && selectedCourse.id === courseData.id) {
-            selectedCourse = null;
-            alert("選択を解除しました");
-        } else {
-            selectedCourse = courseData;
-            item.classList.add('ring-4', 'ring-blue-400');
-            // スマホ向けガイド
-            const guide = document.createElement('div');
-            guide.id = "mobile-guide";
-            guide.className = "fixed bottom-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-6 py-3 rounded-full text-xs font-bold z-[100] shadow-2xl";
-            guide.innerText = "配置したい曜日（列）をタップしてください";
-            if (!document.getElementById('mobile-guide')) document.body.appendChild(guide);
-            setTimeout(() => guide?.remove(), 3000);
-        }
-    }
+    window.applyMobileLogic = function() {
+        if (window.innerWidth > 768) return;
 
-    // 既存の renderSyllabusList を拡張してスマホ用イベントを付与
+        // シラバス一覧の各アイテムにタップイベントを付与
+        document.querySelectorAll('#syllabus-list > div').forEach(el => {
+            el.onclick = function() {
+                // 既存のドラッグ用データを取得
+                const courseData = JSON.parse(this.getAttribute('data-course-json') || '{}');
+                
+                // 選択の切り替え
+                document.querySelectorAll('#syllabus-list > div').forEach(d => d.style.border = '2px solid #f1f5f9');
+                if (selectedCourse && selectedCourse.id === courseData.id) {
+                    selectedCourse = null;
+                } else {
+                    selectedCourse = courseData;
+                    this.style.border = '3px solid #3b82f6';
+                    alert(selectedCourse.title + " を選択しました。配置したい曜日（列）をタップしてください。");
+                }
+            };
+        });
+
+        // 曜日（ドロップゾーン）をタップした時の処理
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+            zone.onclick = function() {
+                if (selectedCourse) {
+                    // 既存の追加関数を呼び出し
+                    addCourseToGrid(selectedCourse);
+                    selectedCourse = null;
+                    document.querySelectorAll('#syllabus-list > div').forEach(d => d.style.border = '2px solid #f1f5f9');
+                }
+            };
+        });
+    };
+
+    // シラバス描画後にスマホ用イベントを当てるよう拡張
     const originalRender = window.renderSyllabusList;
     window.renderSyllabusList = function(filter) {
         originalRender(filter);
-        if (window.innerWidth <= 768) {
-            document.querySelectorAll('#syllabus-list > div').forEach(el => {
-                // ドラッグデータを属性に保存
-                const mockEvent = { dataTransfer: { setData: (k, v) => el.setAttribute('data-course-json', v) } };
-                el.ondragstart(mockEvent);
-                el.onclick = handleSyllabusTap;
-            });
-        }
+        // シラバスの各DOMにJSONデータを紐付け
+        document.querySelectorAll('#syllabus-list > div').forEach((el, index) => {
+            const course = masterSyllabus[index]; // 簡易紐付け
+            if(course) el.setAttribute('data-course-json', JSON.stringify(course));
+        });
+        window.applyMobileLogic();
     };
 
-    // グリッド（列）へのタップイベント
-    document.addEventListener('click', function(e) {
-        if (window.innerWidth > 768 || !selectedCourse) return;
-        
-        const dropZone = e.target.closest('.drop-zone');
-        if (dropZone) {
-            addCourseToGrid(selectedCourse);
-            selectedCourse = null;
-            document.querySelectorAll('#syllabus-list > div').forEach(el => el.classList.remove('ring-4', 'ring-blue-400'));
-            document.getElementById('mobile-guide')?.remove();
-        }
-    });
-
-    // 3. 初期実行
-    window.renderSyllabusList();
+    // 初期実行
+    setTimeout(window.applyMobileLogic, 500);
 })();
+
 
 </body>
 </html>
