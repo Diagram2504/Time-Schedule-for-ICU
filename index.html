@@ -7,114 +7,137 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        /* 基本グリッド */
         .time-grid {
             display: grid;
-            grid-template-columns: 80px repeat(6, minmax(145px, 1fr));
+            grid-template-columns: 60px repeat(6, minmax(100px, 1fr));
             grid-template-rows: repeat(145, minmax(12px, 1fr));
             background-color: #ffffff;
             position: relative;
         }
 
-        /* --- スマホ専用：ドロワーメニュー設定 --- */
+        /* --- スマホ専用：ドロワー & 表サイズ調整 --- */
         @media (max-width: 768px) {
             body { overflow-x: hidden !important; }
             main { flex-direction: column !important; height: 100vh !important; }
             
             aside {
                 position: fixed !important;
-                top: 0; right: -100%; /* 初期状態は画面外 */
-                width: 85% !important; 
-                height: 80vh !important;
-                z-index: 100;
-                transition: right 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-                box-shadow: -10px 0 30px rgba(0,0,0,0.2);
-                border-radius: 0 0 0 30px;
+                top: 0; right: -100%;
+                width: 90% !important; 
+                height: 100% !important; /* 見切れ防止のため全高確保 */
+                z-index: 150;
+                transition: right 0.3s ease-out;
                 background: white !important;
+                padding-top: env(safe-area-inset-top); /* iPhone等のノッチ対策 */
+                display: flex; flex-direction: column;
             }
-            aside.open { right: 0; } /* メニュー展開時 */
+            aside.open { right: 0; }
 
             #overlay {
                 display: none; position: fixed; inset: 0;
-                background: rgba(0,0,0,0.55); z-index: 90;
-                backdrop-filter: blur(2px);
+                background: rgba(0,0,0,0.6); z-index: 140; backdrop-filter: blur(3px);
             }
             #overlay.active { display: block; }
 
-            #capture-area { overflow-x: auto !important; -webkit-overflow-scrolling: touch; padding: 10px !important; }
-            #timetable-card { min-width: 900px !important; }
+            #capture-area { overflow-x: auto !important; padding: 10px !important; background: #f8fafc; }
+            #timetable-card { min-width: 650px !important; } /* スマホでちょうど良いサイズ */
+            .time-grid { grid-template-columns: 50px repeat(6, 1fr); }
         }
 
-        /* --- PC版・共通デザイン --- */
+        /* --- デザイン共通 --- */
         .course-block {
-            margin: 1px 2px; padding: 4px 6px; border-radius: 8px; font-size: 0.7rem;
+            margin: 1px 2px; padding: 4px 6px; border-radius: 8px; font-size: 0.65rem;
             line-height: 1.1; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            z-index: 10; display: flex; flex-direction: column; border: 1px solid rgba(0,0,0,0.05); cursor: pointer;
-            transition: all 0.2s ease;
+            z-index: 10; display: flex; flex-direction: column; border: 1px solid rgba(0,0,0,0.05);
         }
-        .is-super { border: 3px double #2563eb !important; background-image: repeating-linear-gradient(-45deg, rgba(37, 99, 235, 0.05) 0, rgba(37, 99, 235, 0.05) 10px, transparent 10px, transparent 20px); }
-        .time-tag-top, .time-tag-bottom { font-family: ui-monospace; font-size: 10px; background: rgba(30, 58, 138, 0.9); color: white; padding: 1px 4px; border-radius: 4px; position: absolute; left: 4px; font-weight: 900; }
-        .time-tag-top { top: 4px; } .time-tag-bottom { bottom: 4px; }
-        .delete-btn { position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; background: #fee2e2; color: #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; z-index: 70; border: 1px solid #fecaca; }
-        .period-label { display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #f8fafc; border-bottom: 1px solid #e2e8f0; border-right: 2px solid #3b82f6; color: #1e40af; }
-        .period-btn { @apply border-2 border-gray-100 rounded-xl px-2 py-2 text-[10px] bg-white font-black text-gray-400 transition-all; }
-        .period-btn.active { @apply border-blue-600 text-blue-700 bg-blue-50 ring-2 ring-blue-100; }
+        .is-super { border: 2px double #2563eb !important; background-image: repeating-linear-gradient(-45deg, rgba(37, 99, 235, 0.05) 0, rgba(37, 99, 235, 0.05) 10px, transparent 10px, transparent 20px); }
+        .delete-btn { position: absolute; top: -5px; right: -5px; width: 20px; height: 20px; background: #ef4444; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; z-index: 30; border: 2px solid white; shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .period-label { display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #f1f5f9; border-bottom: 1px solid #e2e8f0; border-right: 2px solid #3b82f6; color: #1e40af; font-weight: bold; font-size: 10px; }
+        
+        /* 選択中の時限ボタンUI */
+        .period-btn { @apply border-2 border-slate-100 rounded-xl px-2 py-2 text-[10px] bg-white font-black text-slate-400 transition-all flex items-center justify-center gap-1; }
+        .period-btn.active { @apply border-blue-600 text-blue-700 bg-blue-50; }
+        .period-btn.active::before { content: '✓'; font-size: 10px; }
+
+        #edit-modal { display: none; }
+        #edit-modal.active { display: flex; }
     </style>
 </head>
 <body class="bg-gray-100 h-screen flex flex-col overflow-hidden text-gray-800 font-sans">
 
     <div id="overlay" onclick="toggleMenu()"></div>
 
-    <header class="bg-white shadow-md px-6 py-3 flex justify-between items-center z-[110] border-b-2 border-blue-600">
-        <div>
-            <h1 class="text-xl font-black text-blue-900">ICU Timetable <span class="text-blue-600">2026 Spring</span></h1>
-        </div>
-        <div class="flex items-center gap-3">
-            <button onclick="downloadImage()" class="hidden md:block bg-green-600 text-white px-5 py-2 rounded-full font-black text-xs shadow-lg hover:bg-green-700">Save Image</button>
-            <button onclick="toggleMenu()" class="md:hidden bg-blue-600 text-white px-6 py-2 rounded-full font-black text-xs shadow-xl active:scale-95 transition-transform">MENU</button>
+    <header class="bg-white shadow-sm px-5 py-3 flex justify-between items-center z-[110] border-b-2 border-blue-600">
+        <h1 class="text-lg font-black text-blue-900">ICU <span class="text-blue-600">2026 Spring</span></h1>
+        <div class="flex gap-2">
+            <button onclick="downloadImage()" class="hidden md:block bg-green-600 text-white px-4 py-1.5 rounded-full font-black text-xs">Save</button>
+            <button onclick="toggleMenu()" class="md:hidden bg-blue-600 text-white px-5 py-1.5 rounded-full font-black text-xs">MENU</button>
         </div>
     </header>
 
     <main class="flex-1 flex overflow-hidden relative">
-        <aside id="sidebar" class="w-80 bg-white border-r border-gray-200 flex flex-col shadow-inner overflow-hidden">
-            <div class="p-5 border-b bg-blue-50/50">
+        <aside id="sidebar" class="w-80 bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
+            <div class="p-5 border-b bg-blue-50/30">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-[10px] font-black uppercase text-blue-800 tracking-widest flex items-center">✨ Free Add</h2>
-                    <button onclick="toggleMenu()" class="md:hidden text-gray-300 hover:text-red-500 text-2xl font-bold">&times;</button>
+                    <h2 class="text-[10px] font-black uppercase text-blue-800 tracking-widest">✨ 予定を自由に追加</h2>
                 </div>
-                <input type="text" id="custom-name" placeholder="予定名（サークル・バイト等）" class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 text-xs mb-3 outline-none focus:border-blue-500 transition-all">
+                <input type="text" id="custom-name" placeholder="サークル・バイトなど" class="w-full border-2 border-gray-200 rounded-xl px-4 py-2 text-xs mb-3 outline-none focus:border-blue-500">
+                
                 <div class="mb-3 flex gap-2">
                     <select id="custom-day" class="flex-1 border-2 border-gray-200 rounded-xl px-2 py-2 text-xs font-bold bg-white">
-                        <option value="1">月曜日</option><option value="2">火曜日</option><option value="3">水曜日</option>
-                        <option value="4">木曜日</option><option value="5">金曜日</option><option value="6">土曜日</option>
+                        <option value="1">月曜</option><option value="2">火曜</option><option value="3">水曜</option>
+                        <option value="4">木曜</option><option value="5">金曜</option><option value="6">土曜</option>
                     </select>
-                    <label class="flex items-center text-[10px] font-black text-blue-600 bg-white px-3 rounded-xl border-2 border-blue-100 cursor-pointer select-none">
-                        <input type="checkbox" id="custom-is-super" class="mr-1" onchange="togglePeriodButtons('custom')"> SUPER
+                    <label class="flex items-center text-[9px] font-black text-blue-600 bg-white px-2 rounded-xl border-2 border-blue-100">
+                        <input type="checkbox" id="custom-is-super" onchange="togglePeriodButtons('custom')"> SUPER
                     </label>
                 </div>
+
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-[9px] font-bold text-gray-400">時限を選択</label>
+                    <button onclick="toggleManualInput('custom')" class="text-[9px] font-black text-blue-500 underline">時間指定に変更</button>
+                </div>
+
                 <div id="custom-period-container" class="grid grid-cols-4 gap-1.5 mb-4"></div>
+                <div id="custom-manual-container" class="hidden grid grid-cols-2 gap-2 mb-4">
+                    <input type="time" id="custom-manual-start" class="border p-2 rounded-lg text-xs font-bold" value="14:00">
+                    <input type="time" id="custom-manual-end" class="border p-2 rounded-lg text-xs font-bold" value="15:15">
+                </div>
+
                 <input type="hidden" id="custom-start"><input type="hidden" id="custom-end">
-                <button onclick="addCustomCourse()" class="w-full bg-blue-600 text-white text-[11px] py-3.5 rounded-xl font-black shadow-lg hover:bg-blue-700 active:scale-95 transition-all">ADD TO TIMETABLE</button>
+                <button onclick="addCustomCourse()" class="w-full bg-blue-600 text-white text-[11px] py-3.5 rounded-xl font-black shadow-lg">時間割に追加</button>
             </div>
 
             <div class="p-4 bg-gray-50 border-b">
-                <input type="text" id="search-input" oninput="renderSyllabusList(this.value)" placeholder="🔍 授業名・教員名で検索..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-2 text-xs outline-none focus:border-blue-400 bg-white">
+                <input type="text" id="search-input" oninput="renderSyllabusList(this.value)" placeholder="🔍 授業を検索..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-2 text-xs bg-white">
             </div>
-
-            <div id="syllabus-list" class="flex-1 overflow-y-auto p-4 space-y-3 bg-white"></div>
-
-            <button onclick="toggleMenu()" class="md:hidden w-full py-5 bg-slate-50 text-slate-400 font-black text-[10px] tracking-widest border-t uppercase">Close Menu</button>
+            <div id="syllabus-list" class="flex-1 p-4 space-y-3 bg-white"></div>
         </aside>
 
-        <div class="flex-1 overflow-auto p-4 bg-slate-100/50" id="capture-area">
-            <div id="timetable-card" class="bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden mx-auto">
-                <div class="grid grid-cols-[80px_repeat(6,1fr)] bg-blue-900 text-white text-center text-[10px] font-black py-4 tracking-widest uppercase border-b border-blue-800">
+        <div class="flex-1 overflow-auto p-4 bg-slate-50" id="capture-area">
+            <div id="timetable-card" class="bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden mx-auto">
+                <div class="grid grid-cols-[60px_repeat(6,1fr)] bg-blue-900 text-white text-center text-[9px] font-black py-3 uppercase tracking-tighter">
                     <div>Per</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
                 </div>
                 <div id="timetable-grid" class="time-grid"></div>
             </div>
         </div>
     </main>
+
+    <div id="edit-modal" class="fixed inset-0 bg-black/70 z-[200] items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden">
+            <div class="p-6 space-y-4">
+                <h3 class="font-black text-blue-900">授業内容を編集</h3>
+                <input type="hidden" id="edit-id">
+                <input type="text" id="edit-title" class="w-full border-b-2 border-blue-100 py-2 font-bold outline-none focus:border-blue-500">
+                <input type="text" id="edit-location" placeholder="場所 (📍 本館115など)" class="w-full border-b-2 border-blue-100 py-2 text-sm">
+                <div class="flex gap-4 mt-4">
+                    <button onclick="saveEdit()" class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-black text-xs">保存</button>
+                    <button onclick="closeModal('edit-modal')" class="flex-1 bg-gray-100 text-gray-500 py-3 rounded-xl font-bold text-xs">戻る</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         const GRID_START_HOUR = 8, GRID_START_MINUTE = 30;
@@ -528,20 +551,24 @@
 ];
 
         let activeData = [];
+        let isManualMode = false;
 
-        // --- スマホメニュー操作 ---
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('active');
         }
 
-        // --- 時間計算ロジック ---
+        function toggleManualInput(prefix) {
+            isManualMode = !isManualMode;
+            document.getElementById(`${prefix}-period-container`).classList.toggle('hidden', isManualMode);
+            document.getElementById(`${prefix}-manual-container`).classList.toggle('hidden', !isManualMode);
+        }
+
         function timeToRow(t) {
             const [h, m] = t.split(':').map(Number);
             return Math.floor(((h * 60 + m) - (GRID_START_HOUR * 60 + GRID_START_MINUTE)) / 5) + 1;
         }
 
-        // --- グリッド初期化 ---
         function initGrid() {
             const grid = document.getElementById('timetable-grid');
             grid.innerHTML = '';
@@ -549,54 +576,31 @@
                 const times = PERIOD_DATA[key];
                 const s = timeToRow(times[0]), e = timeToRow(times[1]);
                 const label = document.createElement('div');
-                label.className = 'period-label shadow-sm font-mono';
+                label.className = 'period-label';
                 label.style.gridColumn = '1'; label.style.gridRow = `${s} / span ${e - s}`;
-                label.innerHTML = `<div class="text-[10px] font-black">${key === 'L' ? 'Lunch' : key}</div><div class="text-[7px] opacity-40">${times[0]}</div>`;
+                label.innerHTML = `<div>${key}</div>`;
                 grid.appendChild(label);
             });
             for (let day = 1; day <= 6; day++) {
                 const col = document.createElement('div');
                 col.className = 'border-r border-gray-100 drop-zone';
                 col.style.gridColumn = day + 1; col.style.gridRow = '1 / span 145';
-                
-                // PC用ドラッグ＆ドロップ
-                col.ondragover = (e) => e.preventDefault();
-                col.ondrop = (e) => {
-                    e.preventDefault();
-                    addCourseToGrid(JSON.parse(e.dataTransfer.getData('course')));
-                };
                 grid.appendChild(col);
             }
         }
 
-        // --- シラバス描画 ---
         function renderSyllabusList(filter = '') {
             const list = document.getElementById('syllabus-list');
             list.innerHTML = '';
-            masterSyllabus.filter(c => c.title.includes(filter) || c.instructor.includes(filter)).forEach(course => {
+            masterSyllabus.filter(c => c.title.includes(filter)).forEach(course => {
                 const el = document.createElement('div');
-                el.className = 'bg-white border-2 border-slate-100 p-3 rounded-2xl shadow-sm cursor-pointer hover:border-blue-400 hover:shadow-md transition-all active:scale-95';
-                el.draggable = true;
-                el.ondragstart = (e) => e.dataTransfer.setData('course', JSON.stringify(course));
-                
-                // クリック/タップで追加
-                el.onclick = () => {
-                    addCourseToGrid(course);
-                    if(window.innerWidth <= 768) toggleMenu(); // スマホなら追加後にメニューを閉じる
-                };
-
-                el.innerHTML = `
-                    <div class="flex justify-between items-start mb-1">
-                        <span class="font-black text-xs text-slate-800 leading-tight">${course.title}</span>
-                        <span class="text-[9px] px-1.5 rounded font-black ${course.lang === 'J' ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'}">${course.lang}</span>
-                    </div>
-                    <div class="text-[9px] text-slate-400 font-bold">👤 ${course.instructor}</div>
-                `;
+                el.className = 'bg-white border-2 border-slate-100 p-3 rounded-xl cursor-pointer active:scale-95 transition-all';
+                el.onclick = () => { addCourseToGrid(course); if(window.innerWidth <= 768) toggleMenu(); };
+                el.innerHTML = `<div class="font-black text-xs">${course.title}</div><div class="text-[9px] text-gray-400 mt-1">👤 ${course.instructor}</div>`;
                 list.appendChild(el);
             });
         }
 
-        // --- 時間割への追加処理 ---
         function addCourseToGrid(course) {
             course.periods.forEach(p => {
                 const id = 'p-' + Date.now() + Math.random().toString(36).substr(2, 5);
@@ -612,17 +616,30 @@
             const s = timeToRow(d.start), e = timeToRow(d.end);
             const block = document.createElement('div');
             block.id = d.id;
-            block.className = `course-block ${d.isSuper ? 'is-super' : 'bg-blue-50 border-l-4 border-blue-500 text-blue-900'}`;
-            block.style.gridColumn = d.day + 1; 
-            block.style.gridRow = `${s} / span ${Math.max(5, e - s)}`;
-            block.innerHTML = `
-                <div class="delete-btn" onclick="deleteItem('${d.id}')">&times;</div>
-                <div class="time-tag-top">${d.start}</div>
-                <div class="time-tag-bottom">${d.end}</div>
-                <div class="mt-5 px-1 font-black text-[10px] leading-tight">${d.title}</div>
-                <div class="mt-1 px-1 text-[8px] font-bold text-blue-700/60 truncate">${d.location || 'TBD'}</div>
-            `;
+            block.className = `course-block ${d.isSuper ? 'is-super' : 'bg-blue-50 border-l-4 border-blue-500'}`;
+            block.style.gridColumn = d.day + 1; block.style.gridRow = `${s} / span ${e - s}`;
+            block.onclick = (e) => { if(!e.target.className.includes('delete-btn')) openEditModal(d.id); };
+            block.innerHTML = `<div class="delete-btn" onclick="deleteItem('${d.id}')">&times;</div><div class="font-black text-[9px] leading-tight mt-1">${d.title}</div><div class="text-[7px] text-blue-600 font-bold mt-auto truncate">${d.location || ''}</div>`;
             grid.appendChild(block);
+        }
+
+        function openEditModal(id) {
+            const d = activeData.find(x => x.id === id);
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-title').value = d.title;
+            document.getElementById('edit-location').value = d.location || '';
+            document.getElementById('edit-modal').classList.add('active');
+        }
+
+        function saveEdit() {
+            const id = document.getElementById('edit-id').value;
+            const d = activeData.find(x => x.id === id);
+            d.title = document.getElementById('edit-title').value;
+            d.location = document.getElementById('edit-location').value;
+            document.getElementById(id).remove();
+            renderBlock(d);
+            saveToStorage();
+            closeModal('edit-modal');
         }
 
         function deleteItem(id) {
@@ -631,7 +648,6 @@
             saveToStorage();
         }
 
-        // --- 時限選択ボタンの生成 ---
         function togglePeriodButtons(prefix) {
             const container = document.getElementById(`${prefix}-period-container`);
             const isSuper = document.getElementById(`${prefix}-is-super`).checked;
@@ -652,39 +668,25 @@
 
         function addCustomCourse() {
             const title = document.getElementById('custom-name').value;
-            const start = document.getElementById('custom-start').value;
-            const end = document.getElementById('custom-end').value;
-            if(!title || !start) return alert("予定名と時限を選択してください");
-            addCourseToGrid({ 
-                id: 'c-'+Date.now(), title, instructor: 'Custom', lang: '-', location: 'Personal',
-                periods: [{ day: parseInt(document.getElementById('custom-day').value), start, end }], 
-                isSuper: document.getElementById('custom-is-super').checked 
-            });
-            document.getElementById('custom-name').value = '';
+            let start = document.getElementById('custom-start').value;
+            let end = document.getElementById('custom-end').value;
+            if(isManualMode) {
+                start = document.getElementById('custom-manual-start').value;
+                end = document.getElementById('custom-manual-end').value;
+            }
+            if(!title || !start) return alert("予定名と時間を指定してください");
+            addCourseToGrid({ id: 'c-'+Date.now(), title, periods: [{ day: parseInt(document.getElementById('custom-day').value), start, end }], isSuper: document.getElementById('custom-is-super').checked, instructor: 'Custom' });
             if(window.innerWidth <= 768) toggleMenu();
         }
 
-        function downloadImage() {
-            const card = document.getElementById('timetable-card');
-            html2canvas(card, { scale: 2, useCORS: true }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `ICU_Timetable_${Date.now()}.png`;
-                link.href = canvas.toDataURL();
-                link.click();
-            });
-        }
-
-        function saveToStorage() { localStorage.setItem('icu_timetable_final', JSON.stringify(activeData)); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+        function saveToStorage() { localStorage.setItem('icu_v4', JSON.stringify(activeData)); }
         function loadFromStorage() {
-            const saved = localStorage.getItem('icu_timetable_final');
+            const saved = localStorage.getItem('icu_v4');
             if(saved) { activeData = JSON.parse(saved); activeData.forEach(renderBlock); }
         }
 
-        // 初期化
-        initGrid(); 
-        loadFromStorage(); 
-        renderSyllabusList(); 
-        togglePeriodButtons('custom');
+        initGrid(); loadFromStorage(); renderSyllabusList(); togglePeriodButtons('custom');
     </script>
 </body>
 </html>
