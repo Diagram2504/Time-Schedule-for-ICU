@@ -7,44 +7,51 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
+        /* 基本スタイル */
         body { touch-action: manipulation; }
-        /* 時間割グリッド設定 */
         .time-grid {
             display: grid;
-            grid-template-columns: 45px repeat(6, minmax(95px, 1fr));
-            grid-template-rows: repeat(145, minmax(8px, 1fr)); /* スマホ用高さ */
+            grid-template-columns: 50px repeat(6, minmax(100px, 1fr));
+            grid-template-rows: repeat(145, minmax(10px, 1fr));
             background-color: #ffffff;
             position: relative;
         }
+
+        /* PC向けのゆったりした表示設定 (769px以上) */
         @media (min-width: 769px) {
             .time-grid {
                 grid-template-columns: 80px repeat(6, minmax(150px, 1fr));
-                grid-template-rows: repeat(145, minmax(12px, 1fr)); /* PC用高さ */
+                grid-template-rows: repeat(145, minmax(12px, 1fr));
             }
+            .course-block { font-size: 0.75rem; padding: 6px; }
+            .sidebar-open { transform: translateX(0) !important; position: relative !important; }
         }
 
-        /* 授業ブロックデザイン */
+        /* スマホ向けのコンパクト表示設定 (768px以下) */
+        @media (max-width: 768px) {
+            .time-grid { grid-template-columns: 40px repeat(6, minmax(85px, 1fr)); }
+            .course-block { font-size: 0.6rem; padding: 2px 4px; }
+            .time-tag-top, .time-tag-bottom { font-size: 7px !important; }
+        }
+
+        /* 授業ブロックの共通デザイン */
         .course-block {
-            margin: 1px; border-radius: 4px; line-height: 1.1; position: relative;
+            margin: 1px; border-radius: 6px; line-height: 1.1; position: relative;
             z-index: 10; display: flex; flex-direction: column; border: 1px solid rgba(0,0,0,0.1);
             cursor: pointer; overflow: hidden; transition: all 0.2s ease;
         }
+        .course-block:hover { filter: brightness(0.95); }
+
         .is-super {
-            border: 2px double #2563eb !important;
+            border: 3px double #2563eb !important;
             background-image: repeating-linear-gradient(-45deg, rgba(37, 99, 235, 0.05) 0, rgba(37, 99, 235, 0.05) 5px, transparent 5px, transparent 10px);
         }
 
         .time-tag-top, .time-tag-bottom {
-            font-family: ui-monospace, monospace; font-size: 7px; background: rgba(30, 58, 138, 0.85);
-            color: white; padding: 0 3px; border-radius: 2px; position: absolute; left: 1px; font-weight: bold;
+            font-family: ui-monospace, monospace; font-size: 9px; background: rgba(30, 58, 138, 0.9);
+            color: white; padding: 0 4px; border-radius: 3px; position: absolute; left: 2px; font-weight: 900;
         }
-        @media (min-width: 769px) { .time-tag-top, .time-tag-bottom { font-size: 9px; padding: 1px 4px; } }
-        .time-tag-top { top: 1px; } .time-tag-bottom { bottom: 1px; }
-
-        .mobile-period-tag {
-            font-size: 7px; font-weight: 900; background: white; border: 1px solid #3b82f6;
-            color: #3b82f6; padding: 0 2px; border-radius: 2px; margin-top: 1px; width: fit-content;
-        }
+        .time-tag-top { top: 2px; } .time-tag-bottom { bottom: 2px; }
 
         .delete-btn {
             position: absolute; top: 0; right: 0; width: 18px; height: 18px;
@@ -54,65 +61,63 @@
 
         .period-label {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background-color: #f8fafc; border-bottom: 1px solid #e2e8f0; border-right: 1px solid #3b82f6;
-            color: #1e40af; font-weight: 900; font-size: 9px;
+            background-color: #f8fafc; border-bottom: 1px solid #e2e8f0; border-right: 2px solid #3b82f6;
+            color: #1e40af; font-weight: 900;
         }
 
-        .has-conflict { border: 2px solid #ef4444 !important; box-shadow: 0 0 8px rgba(239, 68, 68, 0.3); }
-
-        /* スマホ用サイドバー背景 */
-        #overlay {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 35; backdrop-filter: blur(2px);
-        }
-        #overlay.active { display: block; }
+        .has-conflict { border: 3px solid #ef4444 !important; box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
     </style>
 </head>
 <body class="bg-gray-100 h-screen flex flex-col text-gray-900 overflow-hidden">
 
-    <div id="overlay" onclick="toggleSidebar()"></div>
-
-    <header class="bg-white shadow-md px-4 md:px-6 py-2 md:py-3 flex justify-between items-center z-50 border-b-2 border-blue-600">
+    <header class="bg-white shadow-md px-6 py-3 flex justify-between items-center z-50 border-b-2 border-blue-600">
         <div>
-            <h1 class="text-sm md:text-xl font-black text-blue-900 tracking-tighter leading-none">ICU <span class="text-blue-600">2026 Spring</span></h1>
+            <h1 class="text-lg md:text-xl font-black text-blue-900 tracking-tighter">ICU Timetable <span class="text-blue-600">2026 Spring</span></h1>
         </div>
         <div class="flex items-center gap-2 md:gap-4">
-            <button onclick="downloadImage()" class="text-[9px] md:text-xs bg-green-600 text-white px-3 md:px-5 py-1.5 md:py-2 rounded-full font-black shadow hover:bg-green-700 transition-all uppercase">Image</button>
-            <button onclick="toggleSidebar()" class="md:hidden text-[9px] bg-blue-600 text-white px-4 py-1.5 rounded-full font-black shadow uppercase">Menu</button>
-            <div class="hidden md:block text-[10px] text-blue-500 font-bold uppercase tracking-widest animate-pulse">Tap to edit</div>
+            <button onclick="downloadImage()" class="text-[10px] md:text-xs bg-green-600 text-white px-3 md:px-5 py-2 rounded-full font-black shadow hover:bg-green-700 transition-all uppercase tracking-widest">
+                Save Image
+            </button>
+            <button onclick="toggleSidebar()" class="md:hidden text-[10px] bg-blue-600 text-white px-4 py-2 rounded-full font-black shadow uppercase">
+                Menu
+            </button>
+            <div class="hidden md:block text-[10px] text-blue-500 font-bold uppercase tracking-widest animate-pulse">
+                Tap to edit
+            </div>
         </div>
     </header>
 
     <main class="flex-1 relative flex overflow-hidden">
-        <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 md:w-80 bg-white z-40 transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col md:relative md:translate-x-0 md:shadow-none border-r">
-            <div class="p-4 md:p-5 border-b bg-blue-50/40">
-                <div class="flex justify-between items-center mb-3">
-                    <h2 class="text-[10px] font-black uppercase text-blue-800 tracking-widest">✨ Free Add</h2>
+        <aside id="sidebar" class="fixed inset-y-0 left-0 w-80 bg-white z-40 transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col md:relative md:translate-x-0 md:shadow-none border-r">
+            <div class="p-5 border-b bg-blue-50/40">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xs font-black text-blue-800 tracking-widest">✨ FREE ADD</h2>
                     <button onclick="toggleSidebar()" class="md:hidden text-2xl text-gray-400">&times;</button>
                 </div>
-                <input type="text" id="custom-name" placeholder="予定名" class="w-full border rounded-xl px-3 py-2 text-xs mb-2 outline-none shadow-sm">
-                <div class="flex gap-2 mb-2">
-                    <select id="custom-day" class="flex-1 border rounded-xl px-2 py-1.5 text-xs font-bold bg-white">
+                <input type="text" id="custom-name" placeholder="予定名 (例: バイト、サークル)" class="w-full border rounded-xl px-4 py-2.5 text-xs mb-3 shadow-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                <div class="flex gap-2 mb-3">
+                    <select id="custom-day" class="flex-1 border rounded-xl px-3 py-2 text-xs font-bold bg-white">
                         <option value="1">月曜</option><option value="2">火曜</option><option value="3">水曜</option>
                         <option value="4">木曜</option><option value="5">金曜</option><option value="6">土曜</option>
                     </select>
-                    <label class="flex items-center text-[9px] font-black bg-white px-2 border rounded-xl">
+                    <label class="flex items-center text-[10px] font-black text-blue-700 bg-white px-3 border-2 rounded-xl cursor-pointer">
                         <input type="checkbox" id="custom-is-super" class="mr-1" onchange="togglePeriodButtons('custom')"> SUPER
                     </label>
                 </div>
-                <div id="custom-period-container" class="grid grid-cols-4 gap-1 mb-3"></div>
+                <div id="custom-period-container" class="grid grid-cols-4 gap-1.5 mb-4"></div>
                 <input type="hidden" id="custom-start"><input type="hidden" id="custom-end">
-                <button onclick="addCustomCourse()" class="w-full bg-blue-600 text-white text-[10px] md:text-xs py-2.5 rounded-xl font-black shadow active:scale-95">ADD TO TIMETABLE</button>
+                <button onclick="addCustomCourse()" class="w-full bg-blue-600 text-white text-xs py-3 rounded-xl font-black hover:bg-blue-700 shadow-lg active:scale-95 transition-all">ADD TO TIMETABLE</button>
             </div>
 
-            <div class="p-3 md:p-4 bg-gray-50 border-b">
-                <input type="text" id="search-input" oninput="renderSyllabusList(this.value)" placeholder="🔍 Search Syllabus..." class="w-full border rounded-xl px-4 py-2 text-xs outline-none focus:border-blue-400">
+            <div class="p-4 bg-gray-50 border-b">
+                <input type="text" id="search-input" oninput="renderSyllabusList(this.value)" placeholder="🔍 Search Syllabus..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-2 text-xs focus:border-blue-400 outline-none transition-all">
             </div>
-            <div id="syllabus-list" class="flex-1 overflow-y-auto p-3 space-y-2 bg-white"></div>
+            <div id="syllabus-list" class="flex-1 overflow-y-auto p-4 space-y-3 bg-white"></div>
         </aside>
 
-        <div class="flex-1 overflow-auto p-1 md:p-4 bg-slate-100" id="capture-area">
-            <div class="inline-block bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden" id="timetable-card">
-                <div class="grid grid-cols-[45px_repeat(6,95px)] md:grid-cols-[80px_repeat(6,1fr)] bg-blue-900 text-white text-center text-[8px] md:text-[10px] font-black uppercase py-2 md:py-3 tracking-widest">
+        <div class="flex-1 overflow-auto p-2 md:p-6 bg-slate-100" id="capture-area">
+            <div class="inline-block bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden" id="timetable-card">
+                <div class="grid grid-cols-[50px_repeat(6,100px)] md:grid-cols-[80px_repeat(6,1fr)] bg-blue-900 text-white text-center text-[9px] md:text-[10px] font-black uppercase py-3 tracking-widest shadow-md">
                     <div>Time</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
                 </div>
                 <div id="timetable-grid" class="time-grid"></div>
@@ -121,19 +126,19 @@
     </main>
 
     <div id="edit-modal" class="fixed inset-0 bg-black/60 z-[100] hidden items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl w-full max-w-xs overflow-hidden shadow-2xl">
+        <div class="bg-white rounded-3xl w-full max-w-xs overflow-hidden shadow-2xl animate-in zoom-in duration-200">
             <div class="bg-blue-900 text-white px-6 py-4 font-black flex justify-between items-center">
                 <span class="text-xs tracking-widest uppercase">Edit Schedule</span>
                 <button onclick="closeModal('edit-modal')" class="text-2xl">&times;</button>
             </div>
             <div class="p-6 space-y-4">
-                <input type="text" id="edit-title" class="w-full border-b-2 border-blue-100 font-black text-lg outline-none focus:border-blue-600">
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="text" id="edit-instructor" placeholder="教員名" class="bg-gray-50 border rounded-xl p-2 text-xs font-bold">
-                    <input type="text" id="edit-location" placeholder="教室 📍" class="bg-gray-50 border rounded-xl p-2 text-xs font-bold">
+                <input type="text" id="edit-title" class="w-full border-b-4 border-blue-50 focus:border-blue-600 outline-none py-2 font-black text-lg">
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="text" id="edit-instructor" placeholder="教員名" class="bg-gray-50 rounded-xl p-3 text-xs font-bold outline-none border">
+                    <input type="text" id="edit-location" placeholder="教室 📍" class="bg-gray-50 rounded-xl p-3 text-xs font-bold outline-none border">
                 </div>
-                <div id="edit-period-container" class="grid grid-cols-4 gap-1 p-2 bg-gray-50 rounded-xl border"></div>
-                <button onclick="saveEdit()" class="w-full bg-blue-600 text-white py-3.5 rounded-2xl font-black text-sm shadow-xl active:scale-95">UPDATE</button>
+                <div id="edit-period-container" class="grid grid-cols-4 gap-1.5 p-2 bg-gray-50 rounded-xl border"></div>
+                <button onclick="saveEdit()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black shadow-xl hover:bg-blue-700 active:scale-95 transition-all">UPDATE</button>
             </div>
             <input type="hidden" id="edit-id"><input type="hidden" id="edit-start"><input type="hidden" id="edit-end">
         </div>
@@ -552,10 +557,7 @@
         let activeData = [];
 
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('active');
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
         }
 
         function timeToRow(t) {
@@ -563,32 +565,40 @@
             return Math.floor(((h * 60 + m) - (8 * 60 + 30)) / 5) + 1;
         }
 
-        function getShortPeriodLabel(start, end, isSuper) {
-            const data = isSuper ? SUPER_DATA : PERIOD_DATA;
-            const startKey = Object.keys(data).find(k => data[k][0] === start);
-            const endKey = Object.keys(data).find(k => data[k][1] === end);
-            return (startKey && endKey && startKey !== endKey) ? `${startKey}-${endKey}` : (startKey || "S");
+        function initGrid() {
+            const grid = document.getElementById('timetable-grid');
+            grid.innerHTML = '';
+            Object.entries(PERIOD_DATA).forEach(([key, [sT, eT]]) => {
+                const s = timeToRow(sT), e = timeToRow(eT);
+                const label = document.createElement('div');
+                label.className = 'period-label shadow-inner';
+                label.style.gridColumn = '1'; label.style.gridRow = `${s} / span ${e - s}`;
+                label.innerHTML = `<span class="text-[8px] opacity-40">${sT}</span><span class="text-[10px] md:text-xs">${key}</span>`;
+                grid.appendChild(label);
+            });
+            for (let i = 1; i <= 6; i++) {
+                const col = document.createElement('div');
+                col.className = 'border-r border-gray-100';
+                col.style.gridColumn = i + 1; col.style.gridRow = '1 / span 145';
+                grid.appendChild(col);
+            }
         }
 
         function renderBlock(d) {
             const grid = document.getElementById('timetable-grid');
             const s = timeToRow(d.start), e = timeToRow(d.end);
             const block = document.createElement('div');
-            block.className = `course-block ${d.isSuper ? 'is-super' : 'bg-blue-50 border-blue-500 text-blue-900 shadow-sm'}`;
-            block.id = d.id; block.style.gridColumn = d.day + 1; block.style.gridRow = `${s} / span ${Math.max(5, e - s)}`;
+            block.className = `course-block ${d.isSuper ? 'is-super' : 'bg-blue-50 border-l-4 border-blue-500 text-blue-900 shadow-sm'}`;
+            block.id = d.id; block.style.gridColumn = d.day + 1; block.style.gridRow = `${s} / span ${Math.max(6, e - s)}`;
             block.onclick = () => openEditModal(d.id);
-            
-            const dayLabel = ['','月','火','水','木','金','土'][d.day];
-            const perLabel = getShortPeriodLabel(d.start, d.end, d.isSuper);
-
             block.innerHTML = `
                 <div class="delete-btn" onclick="event.stopPropagation(); removeBlock('${d.id}')">&times;</div>
                 <div class="time-tag-top">${d.start}</div>
                 <div class="time-tag-bottom">${d.end}</div>
-                <div class="mt-3.5 md:mt-5 px-1">
-                    <div class="mobile-period-tag">${dayLabel}${perLabel}</div>
-                    <div class="font-black truncate text-[9px] md:text-[11px] leading-tight">${d.title}</div>
-                    <div class="text-[7px] md:text-[8px] font-bold text-gray-500 truncate mt-0.5">📍 ${d.location}</div>
+                <div class="mt-5 px-1">
+                    <div class="font-black truncate leading-tight mb-0.5">${d.title}</div>
+                    <div class="text-[8px] font-bold text-gray-500 truncate mb-1">👤 ${d.instructor}</div>
+                    <div class="text-[9px] font-black text-blue-700 bg-white/90 px-1 rounded border border-blue-100 truncate w-fit max-w-full shadow-sm">📍 ${d.location}</div>
                 </div>
             `;
             grid.appendChild(block);
@@ -596,8 +606,7 @@
 
         function removeBlock(id) {
             activeData = activeData.filter(x => x.id !== id);
-            const el = document.getElementById(id);
-            if(el) el.remove();
+            document.getElementById(id).remove();
             checkConflicts(); saveToStorage();
         }
 
@@ -621,8 +630,7 @@
             const start = document.getElementById('edit-start').value;
             const end = document.getElementById('edit-end').value;
             if(start && end) { d.start = start; d.end = end; }
-            const oldEl = document.getElementById(id);
-            if(oldEl) oldEl.remove();
+            document.getElementById(id).remove();
             renderBlock(d); checkConflicts(); saveToStorage(); closeModal('edit-modal');
         }
 
@@ -636,7 +644,7 @@
             Object.entries(data).forEach(([k, [s, e]]) => {
                 if(k === 'L') return;
                 const btn = document.createElement('button');
-                btn.className = 'bg-white border text-[10px] p-1.5 rounded-lg font-black active:bg-blue-100 transition-colors';
+                btn.className = 'bg-white border text-[10px] p-2 rounded-lg font-black hover:bg-blue-50 transition-colors';
                 btn.innerText = k;
                 btn.onclick = () => { 
                     document.getElementById(`${prefix}-start`).value = s; 
@@ -652,8 +660,8 @@
             const title = document.getElementById('custom-name').value;
             const start = document.getElementById('custom-start').value;
             const end = document.getElementById('custom-end').value;
-            if(!title || !start) return alert('予定名と時限を選択してください');
-            const d = { id: 'c-'+Date.now(), title, instructor: 'Custom', location: 'Personal', isSuper: document.getElementById('custom-is-super').checked, day: parseInt(document.getElementById('custom-day').value), start, end };
+            if(!title || !start) return alert('授業名と時限を選択してください');
+            const d = { id: 'c-'+Date.now(), title, instructor: 'Personal', location: 'TBD', isSuper: document.getElementById('custom-is-super').checked, day: parseInt(document.getElementById('custom-day').value), start, end };
             activeData.push(d); renderBlock(d); checkConflicts(); saveToStorage();
             document.getElementById('custom-name').value = '';
         }
@@ -664,7 +672,7 @@
             const filtered = masterSyllabus.filter(c => c.title.toLowerCase().includes(filter.toLowerCase()));
             filtered.forEach(c => {
                 const el = document.createElement('div');
-                el.className = 'p-3 bg-white border-2 border-slate-100 rounded-2xl text-xs font-black shadow-sm active:bg-blue-50 cursor-pointer hover:border-blue-300 transition-all';
+                el.className = 'p-3 bg-white border-2 border-slate-100 rounded-2xl text-xs font-black shadow-sm active:scale-95 transition-all cursor-pointer hover:border-blue-300';
                 el.innerHTML = `<div class="flex justify-between"><span>${c.title}</span><span class="text-[8px] bg-blue-100 text-blue-600 px-1 rounded">${c.lang}</span></div><div class="text-[9px] text-gray-400 font-normal mt-1">${c.instructor}</div>`;
                 el.onclick = () => {
                     c.periods.forEach(p => {
@@ -676,25 +684,6 @@
                 };
                 list.appendChild(el);
             });
-        }
-
-        function initGrid() {
-            const grid = document.getElementById('timetable-grid');
-            grid.innerHTML = '';
-            Object.entries(PERIOD_DATA).forEach(([key, [sT, eT]]) => {
-                const s = timeToRow(sT), e = timeToRow(eT);
-                const label = document.createElement('div');
-                label.className = 'period-label shadow-inner text-center';
-                label.style.gridColumn = '1'; label.style.gridRow = `${s} / span ${e - s}`;
-                label.innerHTML = `<span class="text-[7px] opacity-40">${sT}</span><span class="leading-none">${key}</span>`;
-                grid.appendChild(label);
-            });
-            for (let i = 1; i <= 6; i++) {
-                const col = document.createElement('div');
-                col.className = 'border-r border-gray-100';
-                col.style.gridColumn = i + 1; col.style.gridRow = '1 / span 145';
-                grid.appendChild(col);
-            }
         }
 
         function checkConflicts() {
@@ -712,9 +701,9 @@
             }
         }
 
-        function saveToStorage() { localStorage.setItem('icu_spring_2026_ultimate', JSON.stringify(activeData)); }
+        function saveToStorage() { localStorage.setItem('icu_spring_2026_pro', JSON.stringify(activeData)); }
         function loadFromStorage() {
-            const saved = localStorage.getItem('icu_spring_2026_ultimate');
+            const saved = localStorage.getItem('icu_spring_2026_pro');
             if(saved) { activeData = JSON.parse(saved); activeData.forEach(d => renderBlock(d)); checkConflicts(); }
         }
 
